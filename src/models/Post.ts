@@ -25,6 +25,5 @@ const PostSchema = new Schema({
 
 // Index for faster searching and sorting
 PostSchema.index({ published_at: -1 });
-PostSchema.index({ slug: 1 });
 
 export const Post = models.Post || model('Post', PostSchema);

@@ -36,7 +36,7 @@ export default function PostCard({ post }: PostCardProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
           />
           {category && (
-            <div className="absolute top-3 left-3 bg-neon-cyan/90 text-background text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded">
+            <div className="absolute bottom-2 left-2 bg-black/70 backdrop-blur-sm text-neon-cyan text-xs font-bold uppercase tracking-tight px-2 py-1 rounded-sm">
               {category.name}
             </div>
           )}

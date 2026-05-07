@@ -1,4 +1,4 @@
-import { getPostBySlug, getRelatedPosts } from "@/lib/api";
+import { getPostBySlug, getRelatedPosts, getNeighborPosts } from "@/lib/api";
 import VideoEmbed from "@/components/VideoEmbed";
 import PostContent from "@/components/PostContent";
 import PostCard from "@/components/PostCard";
@@ -6,9 +6,9 @@ import { Metadata } from "next";
 import dbConnect from "@/lib/mongodb";
 import { Post } from "@/models/Post";
 import Link from "next/link";
-// We'll create a client component for Disqus to avoid SSR issues
 import DisqusComments from "@/components/DisqusComments";
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
 
 interface Props {
@@ -32,14 +32,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export async function generateStaticParams() {
-  await dbConnect();
-  const posts = await Post.find({}, 'slug categories').lean();
-  return posts.map((post: any) => ({
-    categorySlug: post.categories?.[0]?.slug || 'blog',
-    postSlug: post.slug,
-  }));
-}
 
 export default async function PostPage({ params }: Props) {
   const { postSlug } = await params;
@@ -57,6 +49,11 @@ export default async function PostPage({ params }: Props) {
     post._id, 
     post.category_ids, 
     4
+  );
+
+  const { prev, next } = await getNeighborPosts(
+    post.published_at,
+    post.category_ids[0]
   );
 
   const date = new Date(post.published_at).toLocaleDateString('pt-BR', {
@@ -94,8 +91,64 @@ export default async function PostPage({ params }: Props) {
           </div>
         )}
 
+        {/* Top Navigation */}
+        <div className="flex justify-between items-center mb-10 pb-6 border-b border-white/5">
+          {prev ? (
+            <Link 
+              href={`/${post.categories[0]?.slug}/${prev.slug}`}
+              className="flex flex-col group max-w-[45%]"
+            >
+              <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1 group-hover:text-neon-cyan transition-colors">Aula Anterior</span>
+              <span className="text-sm text-white font-medium line-clamp-1 group-hover:text-neon-cyan">← {prev.title}</span>
+            </Link>
+          ) : <div />}
+          
+          {next ? (
+            <Link 
+              href={`/${post.categories[0]?.slug}/${next.slug}`}
+              className="flex flex-col items-end group text-right max-w-[45%]"
+            >
+              <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-1 group-hover:text-neon-pink transition-colors">Próxima Aula</span>
+              <span className="text-sm text-white font-medium line-clamp-1 group-hover:text-neon-pink">{next.title} →</span>
+            </Link>
+          ) : <div />}
+        </div>
+
         <div className="bg-background-soft rounded-2xl">
           <PostContent content={post.content} />
+        </div>
+
+        {/* Bottom Navigation */}
+        <div className="flex justify-between items-center mt-12 pt-8 border-t border-white/10">
+          {prev ? (
+            <Link 
+              href={`/${post.categories[0]?.slug}/${prev.slug}`}
+              className="flex items-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all group"
+            >
+              <svg className="w-5 h-5 mr-2 text-gray-400 group-hover:text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+              </svg>
+              <div className="flex flex-col">
+                <span className="text-[10px] text-gray-500 font-bold uppercase">Anterior</span>
+                <span className="text-sm text-white font-bold group-hover:text-neon-cyan">AULA {prev.title.match(/\d+/)?.[0] || ''}</span>
+              </div>
+            </Link>
+          ) : <div />}
+
+          {next ? (
+            <Link 
+              href={`/${post.categories[0]?.slug}/${next.slug}`}
+              className="flex items-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all group"
+            >
+              <div className="flex flex-col items-end">
+                <span className="text-[10px] text-gray-500 font-bold uppercase">Próxima</span>
+                <span className="text-sm text-white font-bold group-hover:text-neon-pink">AULA {next.title.match(/\d+/)?.[0] || ''}</span>
+              </div>
+              <svg className="w-5 h-5 ml-2 text-gray-400 group-hover:text-neon-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          ) : <div />}
         </div>
 
         <footer className="mt-16 pt-8 border-t border-white/10">

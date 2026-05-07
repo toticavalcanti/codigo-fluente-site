@@ -10,7 +10,7 @@ export default async function HomePage({
 }) {
   const params = await searchParams;
   const currentPage = Number(params.page) || 1;
-  const { posts, totalPages } = await getAllPosts(currentPage, 12);
+  const { posts, pages: totalPages } = await getAllPosts(currentPage, 12);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

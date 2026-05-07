@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import dbConnect from "@/lib/mongodb";
 import { Category } from "@/models/Category";
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
 
 interface Props {
@@ -23,20 +24,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export async function generateStaticParams() {
-  await dbConnect();
-  const categories = await Category.find({}, 'slug').lean();
-  return categories.map((cat: any) => ({
-    categorySlug: cat.slug,
-  }));
-}
 
 export default async function CategoryPage({ params, searchParams }: Props) {
   const { categorySlug } = await params;
   const sParams = await searchParams;
   const currentPage = Number(sParams.page) || 1;
   
-  const { posts, totalPages, category } = await getPostsByCategory(categorySlug, currentPage, 12);
+  const { posts, pages: totalPages, category } = await getPostsByCategory(categorySlug, currentPage, 12);
 
   if (!category) {
     return (

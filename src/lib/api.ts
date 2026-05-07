@@ -1,6 +1,13 @@
 import dbConnect from './mongodb';
 import { Category } from '@/models/Category';
 import { Post } from '@/models/Post';
+import { cleanWordPressContent } from './utils';
+
+
+function extractVideo(content: string) {
+  const ytMatch = content.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+  return ytMatch ? `https://www.youtube.com/watch?v=${ytMatch[1]}` : null;
+}
 
 export async function getMenuCategories() {
   await dbConnect();
@@ -28,8 +35,14 @@ export async function getAllPosts(page = 1, limit = 12) {
     Post.countDocuments({})
   ]);
 
+  const cleanedPosts = posts.map(post => ({
+    ...post,
+    excerpt: cleanWordPressContent(post.excerpt || ''),
+    content: cleanWordPressContent(post.content || '')
+  }));
+
   return {
-    posts: JSON.parse(JSON.stringify(posts)),
+    posts: JSON.parse(JSON.stringify(cleanedPosts)),
     total,
     pages: Math.ceil(total / limit)
   };
@@ -63,8 +76,14 @@ export async function getPostsByCategory(slug: string, page = 1, limit = 12) {
     Post.countDocuments({ category_ids: { $in: categoryIds } })
   ]);
 
+  const cleanedPosts = posts.map(post => ({
+    ...post,
+    excerpt: cleanWordPressContent(post.excerpt || ''),
+    content: cleanWordPressContent(post.content || '')
+  }));
+
   return {
-    posts: JSON.parse(JSON.stringify(posts)),
+    posts: JSON.parse(JSON.stringify(cleanedPosts)),
     total,
     pages: Math.ceil(total / limit),
     category: JSON.parse(JSON.stringify(category))
@@ -74,7 +93,41 @@ export async function getPostsByCategory(slug: string, page = 1, limit = 12) {
 export async function getPostBySlug(slug: string) {
   await dbConnect();
   const post = await Post.findOne({ slug }).lean();
-  return post ? JSON.parse(JSON.stringify(post)) : null;
+  if (!post) return null;
+  
+  const cleanedPost = {
+    ...post,
+    excerpt: cleanWordPressContent(post.excerpt || ''),
+    content: cleanWordPressContent(post.content || ''),
+    video_url: post.video_url || extractVideo(post.content || '')
+  };
+  
+  return JSON.parse(JSON.stringify(cleanedPost));
+}
+
+export async function getNeighborPosts(publishedAt: string, categoryId: string) {
+  await dbConnect();
+  const [prev, next] = await Promise.all([
+    Post.findOne({
+      category_ids: categoryId,
+      published_at: { $lt: new Date(publishedAt) }
+    })
+      .sort({ published_at: -1 })
+      .select('slug title')
+      .lean(),
+    Post.findOne({
+      category_ids: categoryId,
+      published_at: { $gt: new Date(publishedAt) }
+    })
+      .sort({ published_at: 1 })
+      .select('slug title')
+      .lean()
+  ]);
+
+  return {
+    prev: prev ? JSON.parse(JSON.stringify(prev)) : null,
+    next: next ? JSON.parse(JSON.stringify(next)) : null
+  };
 }
 
 export async function getRelatedPosts(postId: string, categoryIds: string[], limit = 4) {
