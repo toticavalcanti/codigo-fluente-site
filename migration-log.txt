@@ -1,0 +1,490 @@
+Migration run: 2026-05-07T21:40:20.613Z
+Mode: SAVE
+Total posts: 486
+---
+CLEAN [youtube-heading+ul] aula-98-django-ecommerce-baixa-automatica-de-estoque
+CLEAN [youtube-heading+ul] aula-03-agente-vendas-ia
+CLEAN [youtube-heading+ul] aula-04-memoria-de-agente-com-langchain-pinecone
+CLEAN [youtube-heading+ul] aula-47-tutorial-golang-uso-do-recover-no-controle-de-fluxo
+CLEAN [youtube-heading+ul] aula-14-k8s-configuracao-do-ingress-controller
+CLEAN [youtube-heading+ul] aula-96-django-ecommerce-refatoracao-do-projeto
+CLEAN [youtube-heading+ul] aula-97-django-ecommerce-gerenciamento-de-cartoes-salvos-stripe
+CLEAN [youtube-heading+ul] aula-02-inteligencia-coletiva-agentes-e-enxames-na-pratica
+CLEAN [youtube-heading+ul] aula-13-persistencia-e-resiliencia-com-pv-pvc-e-probes-no-k8s
+CLEAN [youtube-heading+ul] aula-01-inteligencia-coletiva-agentes-e-enxames-na-pratica
+CLEAN [youtube-heading+ul] aula-27-implementacao-da-funcionalidade-redefinir-senha
+CLEAN [youtube-heading+ul] aula-45-tutorial-golang-uso-de-panic-no-tratamento-de-erros
+CLEAN [youtube-heading+ul] aula-26-implementacao-da-funcionalidade-esqueceu-a-senha-em-react-e-golang-com-fiber
+CLEAN [youtube-heading+ul] aula-44-tutorial-golang-ordenacao-avancada-por-funcoes-personalizadas
+CLEAN [youtube-heading+ul] aula-11-k8s-deploy-na-digital-ocean-com-terraform
+CLEAN [youtube-heading+ul] aula-28-deploy-do-sistema-de-autenticacao-no-render-com
+CLEAN [youtube-heading+ul] aula-12-k8s-gerenciamento-de-configuracao-e-secrets-no-kubernetes
+CLEAN [youtube-heading+ul] aula-53-encerramento-python-tensorflow-keras-redes-neurais
+CLEAN [youtube-heading+ul] aula-94-django-ecommerce-confirmacao-e-processamento-de-pagamento
+CLEAN [youtube-heading+ul] aula-46-tutorial-golang-uso-do-defer-no-controle-de-fluxo
+CLEAN [youtube-heading+ul] aula-95-django-ecommerce-calculo-dinamico-do-valor-do-pedido-e-integracao-com-frontend
+CLEAN [youtube-heading+ul] aula-52-roopunleashed
+CLEAN [youtube-heading+ul] aula-93-django-ecommerce-metodo-de-pagamento
+CLEAN [youtube-heading+ul] aula-51-tecnologias-de-ia-no-software-fooocus
+CLEAN [youtube-heading+ul] aula-24-golang-fiber-react-autenticacao-de-usuarios
+CLEAN [youtube-heading+ul] aula-50-shap-e-openai-ativos-3d-via-prompt
+CLEAN [youtube-heading+ul] aula-23-golang-fiber-react-login-e-redirect
+CLEAN [youtube-heading+ul] aula-41-tutorial-golang-mutexes
+SKIP  conheca-o-sora-da-open-ai
+CLEAN [youtube-heading+ul] aula-21-golang-fiber-react-navigation
+CLEAN [youtube-heading+ul] aula-92-ecommerce-cliente-stripe
+CLEAN [youtube-heading+ul] aula-91-ecommerce-introducao-ao-stripe
+SKIP  tecnologia-avancada-em-robotica-uma-nova-era-de-autonomia
+CLEAN [youtube-heading+ul] aula-22-golang-fiber-react-register
+CLEAN [youtube-heading+ul] aula-40-tutorial-golang-atomic-counters
+CLEAN [youtube-heading+ul] aula-89-lidando-com-o-sinal-do-objeto-visualizado
+CLEAN [youtube-heading] aula-06-kubernetes-deployments
+CLEAN [youtube-heading] aula-47-redes-neurais-rag-retrieval-augmented-generation
+CLEAN [youtube-heading+ul] aula-39-tutorial-golang-rate-limiting
+CLEAN [youtube-heading+ul] aula-88-sinal-personalizado-custom-signal-e-mixin
+SKIP  nova-tecnologia-aprimora-jogos-e-reunioes-online
+CLEAN [youtube-heading] aula-45-redes-neurais-retrieval-based-voice-conversion
+CLEAN [youtube-heading+ul] aula-83-loja-online-adicionando-campo-obrigatorio
+CLEAN [youtube-heading] aula-41-redes-neurais-aplicadas-a-chatbots-explorando-o-vicuna
+CLEAN [youtube-heading] aula-40-tensorflow-keras-redes-neurais-transformers
+CLEAN [youtube-heading+ul] aula-20-golang-fiber-react-router
+CLEAN [youtube-heading+ul] aula-18-golang-fiber-reset-password
+CLEAN [youtube-heading+ul] aula-85-transformando-as-views-atualizando-registro-login-e-logout
+CLEAN [youtube-heading+ul] aula-16-golang-fiber-implementando-a-redefinicao-de-senhas
+CLEAN [youtube-heading] aula-42-redes-neurais-aplicadas-a-chatbots-explorando-o-huggingface
+CLEAN [youtube-heading+ul] aula-33-tutorial-golang-iteracao-sobre-valores-recebidos-de-um-canal
+CLEAN [youtube-heading+ul] aula-82-loja-online-formulario-personalizado-do-modelo-user
+CLEAN [youtube-heading+ul] aula-13-golang-fiber-usuario-autenticado
+CLEAN [youtube-heading+ul] aula-81-loja-online-gerenciador-do-modelo-user
+SKIP  aula-31-tutorial-golang-operacoes-de-canal-sem-bloqueio
+CLEAN [youtube-heading+ul] aula-79-loja-online-personalizando-o-model-user-default-django
+CLEAN [youtube-heading] aula-39-tensorflow-keras-redes-neurais-rnn-chatbot
+CLEAN [youtube-heading+ul] aula-77-loja-online-ajax-no-contact-form
+CLEAN [youtube-heading+ul] aula-12-golang-fiber-cookies
+SKIP  aula-30-tutorial-golang-timeouts
+SKIP  aula-29-tutorial-golang-select
+CLEAN [youtube-heading+ul] aula-25-golang-fiber-react-logout
+CLEAN [youtube-heading+ul] a-nova-era-do-aprendizado-em-programacao-alem-da-sintaxe
+CLEAN [youtube-heading+ul] aula-10-k8s-introducao-ao-terraform-automatizando-infraestrutura
+CLEAN [youtube-heading+ul] aula-42-tutorial-golang-stateful-goroutines
+CLEAN [youtube-heading+ul] aula-09-kubernetes-dockerizar-o-app-e-implantar-na-oci
+CLEAN [youtube-heading+ul] aula-43-tutorial-golang-ordenacao-de-slices-em-go-com-o-pacote-sort
+CLEAN [youtube-heading] 49-retrieval-augmented-generation-com-mistral-ai-e-langchain
+CLEAN [youtube-heading] aula-07-kubernetes-services
+CLEAN [youtube-heading] aula-48-redes-neurais-advanced-rag-com-llamaindex-openai-gpt
+CLEAN [youtube-heading+ul] aula-38-tutorial-golang-analise-de-dados-em-tempo-real
+CLEAN [youtube-heading+ul] aula-37-tutorial-golang-waitgroups
+CLEAN [youtube-heading] aula-08-kubernetes-cluster-oci
+CLEAN [youtube-heading+ul] aula-90-tratamento-e-encerramento-de-sessoes-de-usuario
+CLEAN [youtube-heading] aula-05-kubernates-replicaset
+CLEAN [youtube-heading] aula-46-redes-neurais-illusion-diffusion-hq
+CLEAN [youtube-heading+ul] aula-87-obtendo-endereco-ip-do-user
+CLEAN [youtube-heading+ul] aula-19-golang-fiber-react-frontend
+CLEAN [youtube-heading+ul] aula-86-o-poder-da-analise-de-dados-em-aplicativos-web
+CLEAN [youtube-heading] aula-04-kubernates-pods
+CLEAN [youtube-heading+ul] aula-36-tutorial-golang-worker-pools
+CLEAN [youtube-heading+ul] aula-35-tutorial-golang-tickers
+CLEAN [youtube-heading+ul] aula-14-golang-fiber-logout
+CLEAN [youtube-heading+ul] aula-32-tutorial-golang-fechamento-de-canais-em-go
+CLEAN [youtube-heading+ul] aula-80-loja-online-atualizacao-ajax-csrf-token
+CLEAN [youtube-heading+ul] aula-11-golang-fiber-jwt
+CLEAN [youtube-heading+ul] aula-78-loja-online-seguranca-e-organizacao-dos-javascripts
+CLEAN [youtube-heading] aula-03-kubernates-arquitetura-de-alto-nivel
+CLEAN [youtube-heading] aula-44-redes-neurais-retrieval-based-voice-conversion
+CLEAN [youtube-heading+ul] aula-17-golang-fiber-enviando-emails
+CLEAN [youtube-heading] aula-02-kubernates-arquitetura-de-baixo-nivel
+CLEAN [youtube-heading] aula-43-redes-neurais-modelos-de-difusao-estavel
+CLEAN [youtube-heading+ul] aula-84-loja-online-atualizar-formularios-de-registro-de-login
+CLEAN [youtube-heading+ul] aula-34-tutorial-golang-trabalhando-com-temporizadores-timers-em-go
+CLEAN [youtube-heading] aula-01-kubernates-introducao-ao-kubernetes
+CLEAN [youtube-heading+ul] aula-15-golang-fiber-formatando-a-saida
+CLEAN [youtube-heading+ul] aula-10-golang-fiber-login
+CLEAN [youtube-heading] aula-38-tensorflow-keras-redes-neurais-rnn-chatbot
+SKIP  aula-28-tutorial-golang-direcao-dos-canais
+CLEAN [youtube-heading] aula-37-tensorflow-keras-redes-neurais-rnn-chatbot
+CLEAN [youtube-heading+ul] aula-74-loja-online-botao-de-adicionar-na-lista-de-produtos
+SKIP  aula-05-golang-fiber-packages
+SKIP  aula-01-golang-fiber-hello-world
+SKIP  aula-30-tensor-flow-keras-vgg-3-dropout-data-augmentation
+SKIP  aula-20-tutorial-golang-metodos
+SKIP  aula-19-tutorial-golang-structs
+SKIP  aula-18-tutorial-golang-ponteiros
+SKIP  aula-27-tensor-flow-keras-conjunto-de-dados-cifar-10-vgg-3-dropout
+SKIP  aula-17-tutorial-golang-recursao
+SKIP  aula-15-tutorial-golang-funcoes-variaveis
+SKIP  return-multiples-values
+SKIP  aula-13-tutorial-golang-functions
+SKIP  aula-12-tutorial-golang-range
+CLEAN [youtube-heading+ul] aula-09-golang-fiber-register-user
+SKIP  aula-27-tutorial-golang-sincronizacao-de-canais
+CLEAN [youtube-heading+ul] aula-76-loja-online-tratando-erros
+CLEAN [youtube-heading+ul] aula-25-tutorial-golang-goroutines
+CLEAN [youtube-heading] aula-34-tensorflow-keras-redes-neurais-rnn-chatbot
+CLEAN [youtube-heading+ul] aula-24-tutorial-golang-errors
+CLEAN [youtube-heading+ul] aula-73-loja-online-atualizando-o-carrinho-ajax
+CLEAN [youtube-heading+ul] aula-23-tutorial-golang-generics
+CLEAN [youtube-heading] aula-32-tensor-flow-keras-cifar-10-carregando-o-modelo
+SKIP  aula-70-loja-online-jquery-produtos-assincrono
+SKIP  aula-31-vgg-3-dropout-data-augmentation-batchnormalization
+SKIP  aula-69-loja-online-jquery-aula-04-form
+SKIP  aula-68-loja-online-jquery-aula-03-eventos-de-clique
+SKIP  aula-29-tensor-flow-keras-conjunto-de-dados-cifar-10-vgg-3-data-augmentation
+SKIP  aula-09-tutorial-golang-arrays
+SKIP  aula-57-loja-online-django-perfil-de-convidado
+SKIP  aula-56-loja-online-django-billing-profile-no-checkout-view
+SKIP  aula-55-loja-online-django-perfil-de-pagamento-billing-profile
+SKIP  aula-67-loja-online-jquery-aula-02
+CLEAN [youtube-heading] aula-36-tensorflow-keras-redes-neurais-rnn-chatbot
+SKIP  aula-26-tutorial-golang-channels
+CLEAN [youtube-heading+ul] aula-75-loja-online-auto-search
+CLEAN [youtube-heading+ul] aula-07-golang-fiber-migrations
+CLEAN [youtube-heading+ul] aula-06-golang-fiber-structs
+CLEAN [youtube-heading+ul] aula-72-loja-online-jquery-contagem-de-itens-do-carrinho
+SKIP  aula-03-golang-fiber-banco-de-dados-mysql
+SKIP  aula-22-tutorial-golang-embedding
+SKIP  aula-02-golang-fiber-ponteiros
+SKIP  aula-28-tensor-flow-keras-cifar-10-vgg-3-weight-decay
+SKIP  aula-66-loja-online-jquery
+SKIP  aula-16-tutorial-golang-closure
+SKIP  aula-24-tensor-flow-keras-conjunto-de-dados-cifar-10
+SKIP  aula-22-tensor-flow-keras-redes-neurais-convolucionais
+SKIP  aula-10-tutorial-golang-slices
+SKIP  aula-17-tensor-flow-redes-neurais-rede-neural-convolucional
+SKIP  aula-54-loja-online-django-criando-o-accounts
+SKIP  aula-21-tutorial-golang-interface
+SKIP  a-tensor-language-atl-computacao-de-alto-desempenho
+SKIP  aula-63-loja-online-finalizando-checkout
+SKIP  aula-21-tensor-flow-keras-redes-neurais-mnist
+SKIP  aula-59-loja-online-django-gerenciador-dos-pedidos
+SKIP  aula-58-loja-online-django-associando-o-perfil-ao-pedido
+CLEAN [youtube-heading+ul] aula-08-golang-fiber-request-data
+CLEAN [youtube-heading] aula-35-tensorflow-keras-redes-neurais-rnn-chatbot
+CLEAN [youtube-heading] aula-33-tensorflow-keras-redes-neurais-rnn-chatbot
+SKIP  aula-04-golang-fiber-errors
+CLEAN [youtube-heading+ul] aula-71-loja-online-jquery-json-response
+SKIP  aula-65-loja-online-resumo-da-compra-e-pagina-de-sucesso
+SKIP  aula-26-tensor-flow-keras-conjunto-de-dados-cifar-10-vgg-3
+SKIP  aula-64-loja-online-selecionando-o-endereco
+SKIP  aula-25-tensor-flow-keras-conjunto-de-dados-cifar-10-vgg-2
+SKIP  aula-62-loja-online-associando-o-endereco-ao-pedido
+SKIP  aula-23-tensor-flow-keras-redes-neurais-convolucionais
+SKIP  aula-61-loja-online-app-address
+SKIP  aula-11-tutorial-golang-maps
+SKIP  aula-60-loja-online-gerenciador-de-perfil-de-faturamento
+SKIP  aula-20-tensor-flow-keras-redes-neurais-mnist
+SKIP  aula-19-tensor-flow-redes-neurais-mnist
+SKIP  aula-17-scikit-learn-reconhecimento-facial-avaliacao-quantitativa
+SKIP  aula-18-tensor-flow-redes-neurais-rede-neural-convolucional
+SKIP  aula-51-loja-online-django-total-do-pedido
+SKIP  aula-12-tensor-flow-redes-neurais-multiplicacao-e-adicao
+SKIP  aula-11-tensor-flow-variaveis-e-marcadores-de-posicao
+SKIP  aula-46-loja-online-django-mostrando-itens-do-carrinho
+SKIP  aula-06-aws-vpc-virtual-private-cloud-pratica
+SKIP  aula-12-react-componentes-classes-hooks-useeffect
+SKIP  aula-44-loja-online-django-carrinho-atualizando-o-carrinho
+SKIP  aula-05-tensor-flow-redes-neurais-operacoes
+SKIP  aula-42-loja-online-django-gerencia-do-carrinho-cart-manager
+SKIP  aula-02-aws-iam-gerenciamento-de-identidade-e-acesso
+SKIP  aula-01-aws-iam-gerenciamento-de-identidade-e-acesso
+SKIP  aula-08-react-modularizando-o-tic-tac-toe
+SKIP  aula-16-tensor-flow-redes-neurais-classificacao-com-estimator-api
+SKIP  aula-52-loja-online-django-checkout-view
+SKIP  aula-13-tensor-flow-redes-neurais-regressao-linear-simples
+SKIP  aula-14-react-card-grid-listando-os-users
+SKIP  aula-08-tutorial-golang-switch
+SKIP  aula-48-loja-online-django-icone-do-carrinho-no-menu
+SKIP  aula-10-tensor-flow-grafos
+SKIP  aula-09-tensor-flow-sintaxe-basica
+SKIP  aula-18-hadoop-instalacao-do-hadoop-3-no-ubuntu-20-04-1
+SKIP  aula-45-loja-online-django-carrinho-form
+SKIP  aula-17-hadoop-cloudera-quickstart-com-docker
+SKIP  aula-09-react-tic-tac-toe-estilo-e-deploy
+SKIP  aula-04-tensor-flow-redes-neurais-tensorflow-playground
+SKIP  aula-41-loja-online-django-modelo-do-carrinho
+SKIP  aula-53-loja-online-django-decimal-e-float
+SKIP  aula-15-tensor-flow-redes-neurais-regressao-linear-com-estimator-api
+SKIP  aula-14-tensor-flow-redes-neurais-regressao-linear-exemplo-02
+SKIP  aula-13-react-custom-hooks
+SKIP  aula-11-react-componentes-classes-hooks
+SKIP  aula-05-aws-iam-virtual-private-cloud-vpc
+SKIP  aula-10-react-ciclo-de-vida-componentes
+SKIP  aula-04-aws-iam-grupos-usuarios-e-permissoes
+SKIP  aula-06-tensor-flow-redes-neurais-variaveis-placeholders-e-grafos
+SKIP  aula-03-aws-iam-seguranca-da-conta
+SKIP  aula-03-tensor-flow-redes-neurais-no-colab
+SKIP  aula-02-tensor-flow-redes-neurais-no-colab
+SKIP  aula-50-loja-online-django-gerando-id-do-pedido
+SKIP  aula-06-subsequencia-comum-mais-longa-lcs
+SKIP  aula-49-loja-online-django-processo-de-checkout
+SKIP  aula-08-aws-vpc-instanciando-uma-maquina-linux
+SKIP  aula-47-loja-online-django-remover-itens-do-carrinho
+SKIP  aula-07-aws-vpc-virtual-private-cloud-nacl-e-grupos-de-seguranca
+SKIP  aula-08-tensor-flow-redes-neurais-classificacao
+SKIP  aula-07-tensor-flow-redes-neurais-session
+SKIP  aula-43-loja-online-django-carrinho-calculo-do-total
+SKIP  aula-16-curso-de-r-operadores-em-r
+SKIP  aula-15-golang-para-web-limpando-o-codigo
+SKIP  aula-40-loja-online-django-sessoes
+SKIP  aula-07-react-utilizando-hooks-no-codigo
+SKIP  aula-39-loja-online-django-criando-o-carrinho
+SKIP  aula-13-golang-para-web-modelo-update
+SKIP  aula-03-react-imutabilidade
+SKIP  aula-11-golang-para-web-estrutura-do-projeto
+SKIP  aula-36-loja-online-django-component-tag
+SKIP  aula-38-loja-online-django-pesquisa-por-modelo-relacionado
+SKIP  aula-14-golang-para-web-variaveis-de-caminho
+SKIP  aula-04-react-declarando-um-vencedor
+SKIP  aula-06-react-mostrando-as-jogadas-anteriores
+SKIP  aula-05-react-historico-de-jogadas
+SKIP  aula-37-loja-online-django-breve-intro-de-foreign-keys
+SKIP  aula-12-golang-para-web-modelo-usuario-user-model
+SKIP  aula-34-loja-online-django-query-e-search-bar
+SKIP  aula-33-loja-online-django-search-view
+SKIP  aula-10-golang-para-web-middleware
+SKIP  aula-01-react-introducao
+SKIP  aula-32-loja-online-django-integracao-do-bootstrap-com-o-projeto
+SKIP  aula-07-tutorial-golang-if-else
+SKIP  aula-08-golang-para-web-senhas-encriptadas-com-hashing
+SKIP  aula-35-loja-online-django-melhorando-o-search-com-q-lookups
+SKIP  aula-02-react-passando-dados-por-props
+SKIP  aula-09-golang-para-web-tratamento-de-erros
+SKIP  aula-31-loja-online-django-tutorial-bootstrap-barra-de-navegacao
+SKIP  aula-30-loja-online-django-tutorial-bootstrap-spacing-e-margin-padding
+SKIP  aula-06-golang-para-web-arquivos-estaticos
+SKIP  aula-29-loja-online-django-tutorial-bootstrap-breakpoints
+SKIP  aula-07-golang-para-web-sessions
+SKIP  aula-05-golang-para-web-formulario-para-comentarios
+SKIP  aula-03-python-biblioteca-face-recognition-identificando-rostos
+SKIP  aula-04-computacao-quantica-primeiro-circuito
+SKIP  aula-01-python-biblioteca-face-recognition
+SKIP  aula-02-python-face-recognition-localizando-rostos
+SKIP  aula-04-golang-para-web-redis
+SKIP  aula-15-curso-de-r-convertendo-objetos
+SKIP  aula-28-loja-online-django-tutorial-bootstrap-04
+SKIP  aula-01-tensor-flow-introducao-ao-tensorflow
+SKIP  aula-27-loja-online-django-tutorial-bootstrap-03
+SKIP  aula-06-tutorial-golang-loop-for
+SKIP  02-development-operations-devops-ferramentas
+SKIP  03-development-operations-tutorial-docker-fundamentos
+SKIP  aula-26-loja-online-django-tutorial-bootstrap-02
+SKIP  04-development-operations-tutorial-docker-dockerizando
+SKIP  aula-18-scikit-learn-reconhecimento-facial-avaliacao-qualitativa
+SKIP  aula-02-golang-para-web-gorilla-mux
+SKIP  aula-03-golang-para-web-html-templates
+SKIP  aula-01-golang-para-web
+SKIP  aula-01-development-operations-devops
+SKIP  computacao-biologica-robos-vivos-construidos-com-celulas-de-sapo
+SKIP  aula-05-tutorial-golang-constantes
+SKIP  aula-05-fibonacci-on-iterativa-e-o1-pela-formula
+SKIP  aula-16-scikit-learn-treinamento-do-modelo-svm
+SKIP  aula-25-loja-online-django-tutorial-bootstrap-01
+SKIP  aula-15-scikit-learn-reconhecimento-facial-codigo
+SKIP  aula-14-curso-de-r-criando-objetos
+SKIP  aula-03-computacao-quantica-instalando-o-anaconda-e-o-qiskit
+SKIP  aula-24-loja-online-django-cycle-e-forloop-counter
+SKIP  aula-04-tutorial-golang-variaveis-em-go
+SKIP  aula-14-scikit-learn-reconhecimento-facial-lfw-parte-02
+SKIP  aula-23-loja-online-django-template-filters
+SKIP  12-javascript-programacao-orientada-a-objetos-parte-02
+SKIP  aula-03-tutorial-golang-tipagem-de-valores
+SKIP  aula-13-scikit-learn-reconhecimento-facial-parte-01
+SKIP  aula-19-loja-online-django-reusable-list-view-snippets
+SKIP  aula-12-scikit-learn-reconhecimento-facial-com-eigenfaces-e-svms
+CLEAN [que-fazer-heading] aula-20-python-biblioteca-padrao-modulo-io
+SKIP  11-javascript-programacao-orientada-a-objetos-parte-01
+SKIP  aula-04-criando-games-em-python-movimento-e-colisoes
+SKIP  10-javascript-declaracao-de-variavel-com-let-e-const
+SKIP  aula-01-tutorial-golang-instalacao-no-windows-e-no-linux
+SKIP  aula-02-computacao-quantica-introducao
+CLEAN [que-fazer-heading] aula-19-python-biblioteca-padrao-modulo-math
+SKIP  aula-01-computacao-quantica-fisica-quantica
+SKIP  aula-04-fibonacci-com-programacao-dinamica
+SKIP  aula-11-scikit-learn-persistencia-do-modelo-com-joblib
+SKIP  robos-bio-hibridos-microscopicos-impulsionados-por-musculos-nervos
+SKIP  aula-22-loja-online-django-logout-do-usuario
+SKIP  qubit-do-pobre-homem-pode-resolver-problemas-sem-bit-quantico
+SKIP  aula-02-tutorial-golang-primeiro-codigo-ola-go
+SKIP  aula-03-criando-games-em-python-adicionando-os-itens-ao-jogo
+SKIP  aula-03-complexidade-de-fibonacci-recursiva-simples
+SKIP  aula-21-loja-online-django-navbar
+SKIP  aula-10-scikit-learn-persistencia-do-modelo-com-pickle
+SKIP  aula-20-loja-online-django-reverse-url-no-django
+SKIP  04-javascript-web-audio-api-construindo-um-sintetizador-web
+SKIP  aula-16-hadoop-tutorial-apache-pig
+SKIP  aula-13-curso-de-r-funcoes-estatisticas-sequencias-randomicas
+SKIP  aula-01-criando-games-em-python
+SKIP  aula-08-scikit-learn-maquina-de-vetores-de-suporte
+SKIP  aula-07-scikit-learn-taxa-de-erros-no-knn
+SKIP  aula-18-django-passando-os-argumentos-com-a-tag-include
+CLEAN [que-fazer-heading] aula-18-programacao-funcional-em-python
+SKIP  aula-02-criando-games-em-python-objetos-basicos-do-jogo
+SKIP  celulas-de-memoria-eletronica-de-rotacao-para-redes-neurais
+SKIP  aula-09-scikit-learn-aplicando-svm-ao-digits-dataset
+SKIP  aula-12-curso-de-r-gerando-dados
+SKIP  09-javascript-funcoes-e-eventos
+CLEAN [que-fazer-heading] aula-17-python-geradores-yield
+SKIP  aula-06-scikit-learn-vizinhos-mais-proximos-knn
+SKIP  aula-17-loja-online-django-include-tag
+SKIP  aula-16-modelo-base-base-template
+SKIP  aula-11-curso-de-r-salvando-arquivos-e-variaveis
+SKIP  aula-02-instalando-o-scikit-learn
+SKIP  aula-05-tutorial-pandas-na-pratica
+SKIP  aula-04-instalando-o-pandas
+CLEAN [que-fazer-heading] aula-16-python-orientacao-a-objetos-02
+SKIP  aula-03-instalando-e-plotando-graficos-com-matplotlib
+CLEAN [que-fazer-heading] aula-15-python-orientacao-a-objeto-01
+SKIP  leitura-de-arquivo-no-r-com-scan-e-read-fwf
+CLEAN [que-fazer-heading] aula-14-python-pacotes-packages
+CLEAN [que-fazer-heading] aula-13-python-modules-modulos
+SKIP  aula-14-loja-online-django-slugfield
+SKIP  aula-15-loja-online-django-urls-dos-produtos
+SKIP  03-javascript-web-audio-api-convertendo-notas-midi-em-frequencia
+SKIP  aula-14-apache-sqoop-continuacao_01
+SKIP  07-javascript-instrucao-switch-case-em-javascript
+SKIP  aula-01-aprendizado-de-maquina-com-python-e-scikit-learn
+SKIP  08-javascript-valores-considerados-falsos-no-javascript
+SKIP  aula-15-apache-sqoop-continuacao-02
+SKIP  8-tendencias-analise-e-desenvolvimento-de-sistemas-2019
+SKIP  02-javascript-web-audio-api-construindo-um-teremim
+SKIP  aprendizado-de-maquina-na-medicina
+SKIP  aula-13-apache-sqoop-hadoop-sgbdr
+CLEAN [que-fazer-heading] aula-11-python-funcoes
+SKIP  04-javascript-if-else-condicionais
+CLEAN [que-fazer-heading] aula-10-python-tipo-bool-e-operadores
+SKIP  computador-faz-estruturas-bidimensionais-feitas-de-dna
+SKIP  aula-13-loja-online-django-custom-querysets
+SKIP  aula-12-ecommerce-django-custom-model-managers
+SKIP  intelegencia-artificial-reproduz-cerebro-de-mosca
+SKIP  robos-podem-acelerar-comercio-eletronico
+CLEAN [que-fazer-heading] aula-12-python-pydoc-documentacao
+SKIP  05-javascript-operadores-booleanos
+SKIP  06-javascript-operador-ternario
+SKIP  01-javascript-web-audio-api-introducao
+SKIP  03-javascript-operacoes-basicas-e-precedencia-de-operadores
+SKIP  aula-09-loja-virtual-ecommerce-django-detail-view
+SKIP  aula-02-complexidade-de-algoritmos
+SKIP  aula-01-complexidade-de-algoritmos
+SKIP  aula-11-ecommerce-django-consultas-banco-de-dados
+CLEAN [que-fazer-heading] aula-09-python-matriz-esparsa
+SKIP  aula-10-loja-online-ecommerce-django-image-field-file-field
+SKIP  aula-08-ecommerce-django-cbv-fbv
+SKIP  aula-07-ecommerce-django-produto
+SKIP  02-comentarios-mutacao-coercao-alert-prompt
+SKIP  01-javascript-introducao-ao-javascript
+SKIP  operacoes-logicas-com-dispositivo-quimico
+CLEAN [que-fazer-heading] aula-08-python-dicionario
+CLEAN [youtube-heading+ul] aula-06-loja-virtual-ecommerce-django-static-files
+SKIP  aula-05-loja-virtual-ecommerce-django-login-register
+SKIP  aula-03-loja-virtual-ecommerce-django
+SKIP  aula-03-mini-curso-de-git
+SKIP  aula-02-mini-curso-de-git
+SKIP  aula-30-app-polls-retrospectiva
+SKIP  analise-de-sentimento-flume-twitter-04
+SKIP  analise-de-sentimento-flume-twitter-03
+SKIP  analise-de-sentimento-flume-twitter-02
+SKIP  analise-de-sentimento-flume-twitter-01
+SKIP  formulario-de-administracao
+SKIP  aula-12-tarefa-10-certificacao-hdp-hortonworks
+SKIP  tarefa-08-certificacao-hdp-hortonworks
+SKIP  tarefa-03-certificacao-hdp-hortonworks
+SKIP  aula-02-certificacao-hortonworks-hadoop-fs-intanciando-a-maquina-hortonworks-na-aws
+SKIP  aula-04-loja-virtual-ecommerce-django-contact-form
+SKIP  02-loja-online-ecommerce-django
+CLEAN [que-fazer-heading] set-frozenset-range-python
+SKIP  aula-04-mini-curso-de-git
+SKIP  contagem-palavras-pyspark
+SKIP  comandos-basicos-hadoop
+SKIP  configuracao-da-maquina-cloudera
+SKIP  introducao-ao-map-reduce
+SKIP  introducao-hadoop-file-system
+SKIP  aplicacao-django-reutilizavel
+CLEAN [que-fazer-heading] tuplas-em-python
+SKIP  read-table-na-pratica
+SKIP  tarefa-07-certificacao-hdp-hortonworks
+SKIP  tarefa-02-certificacao-hdp-hortonworks
+SKIP  aula-01-certificacao-hortonworks-hadoop-fs-intanciando-a-maquina-hortonworks-na-aws
+CLEAN [que-fazer-heading] python-operacoes-aritmeticas-logicas-e-bitwise-02
+CLEAN [que-fazer-heading] python-operacoes-aritmeticas-logicas-e-bitwise
+CLEAN [que-fazer-heading] python-variaveis-tipos-controle-de-fluxo-loops
+SKIP  interagindo-com-a-api-de-banco-de-dados
+SKIP  09-criando-e-ativando-models-no-django
+SKIP  aula-05-aplicacao-com-django
+SKIP  aula-08-leitura-de-arquivo-com-read-table
+SKIP  aula-07-pacote-dplyr-funcao-near-precisao-em-comparacao-logica-no-r
+SKIP  aula-03-criando-uma-primeira-aplicacao-com-django
+SKIP  aula-02-instalacao-do-django-no-windows
+SKIP  aula-10-data-science-r-caso-do-titanic-kaggle
+SKIP  aula-04-data-science-r-caso-do-titanic-kaggle
+SKIP  aula-24-ponteiro-algoritmo-em-c
+SKIP  aula-18-algoritmo-em-c-basico
+SKIP  aula-10-algoritmo-em-c-basico
+SKIP  aula-08-algoritmo-em-c-basico
+SKIP  aula-05-algoritmo-em-c-basico
+SKIP  aula-03-algoritmo-em-c-basico
+SKIP  criando-um-formulario-no-django
+SKIP  criacao-da-interface-publica-django
+SKIP  painel-administrativo-do-django
+SKIP  configurando-o-django-com-mysql-ubuntu
+SKIP  aula-06-aplicacao-django-com-mysql
+SKIP  aula-04-aplicacao-com-django
+SKIP  aula-01-instalacao-do-django-no-linux-ubuntu
+SKIP  objetos-atributos-e-tipos-de-dados-em-r
+SKIP  aula-08-data-science-r-caso-do-titanic-kaggle
+SKIP  aula-07-data-science-r-caso-do-titanic-kaggle
+SKIP  aula-06-data-science-r-caso-do-titanic-kaggle
+SKIP  conhecendo-a-plataforma-kaggle
+SKIP  r-no-path-do-sistema
+SKIP  acessando-help-on-line-do-r
+SKIP  aula-11-algoritmo-em-c-basico
+SKIP  aula-07-algoritmo-em-c-basico
+SKIP  01-loja-virtual-ecommerce-django
+SKIP  aula-05-mini-curso-de-git
+SKIP  aula-01-mini-curso-de-git
+SKIP  deploy-no-pythonanywhere-final
+SKIP  ingestao-de-dados-com-o-flume
+SKIP  hdfs-yarn-tipos-de-nos
+SKIP  personalizando-a-aparencia-da-app
+SKIP  tarefa-05-certificacao-hdp-hortonworks
+CLEAN [que-fazer-heading] listas-em-python
+SKIP  tarefa-04-certificacao-hdp-hortonworks
+SKIP  testes-visao-geral-e-revisao
+SKIP  escrevendo-nosso-primeiro-teste
+SKIP  testes-automatizado
+CLEAN [que-fazer-heading] string-em-python
+SKIP  levantando-um-erro-404
+SKIP  api-de-banco-de-dados-pratica
+SKIP  configurando-o-django-com-mysql-windows
+SKIP  aula-05-data-science-r-caso-do-titanic-kaggle
+SKIP  aula-02-data-science-r-caso-do-titanic-kaggle
+SKIP  criando-listando-e-excluindo-objetos-na-memoria-02
+SKIP  criando-listando-e-excluindo-objetos-na-memoria-01
+SKIP  aula-21-algoritmo-em-c
+SKIP  deploy-aplicacao-django-pythonanywhere
+SKIP  project-django-deploy-pythonanywhere
+SKIP  wordcount-pyspark-continuacao
+SKIP  app-django-reutilizavel-windows
+SKIP  formulario-admin-do-django-continuacao
+SKIP  aula-11-tarefa-09-certificacao-hdp-hortonworks
+SKIP  personalizando-app-django-pratica
+SKIP  tarefa-06-certificacao-hdp-hortonworks
+SKIP  tarefa-01-certificacao-hdp-hortonworks
+SKIP  primeiro-teste-automatizado-continuacao
+SKIP  10-instalando-o-mysql-workbench-no-ubuntu
+SKIP  aula-09-data-science-r-caso-do-titanic-kaggle
+SKIP  aula-03-data-science-r-caso-do-titanic-kaggle
+SKIP  instalacao-do-r
+SKIP  aula-23-string-em-c-programacao-em-c
+SKIP  aula-22-vetor-ou-array-algoritmo-em-c
+SKIP  aula-20-algoritmo-em-c-basico
+SKIP  aula-15-algoritmo-em-c
+SKIP  aula-13-algoritmo-em-c-basico
+SKIP  aula-12-algoritmo-em-c-basico
+SKIP  aula-09-algoritmo-em-c-basico
+SKIP  aula-06-algoritmo-em-c-basico
+SKIP  aula-02-algoritmo-em-c
+SKIP  aula-19-algoritmo-em-c-basico
+SKIP  aula-17-algoritmo-em-c-basico
+SKIP  aula-16-algoritmo-em-c
+SKIP  aula-14-algoritmo-em-c-basico
+SKIP  aula-04-algoritmo-em-c-basico
+SKIP  aula-01-algoritmo-em-c

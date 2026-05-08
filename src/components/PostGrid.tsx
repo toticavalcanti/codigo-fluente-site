@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import PostCard from './PostCard';
 import Link from 'next/link';

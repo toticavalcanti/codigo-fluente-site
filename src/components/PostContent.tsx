@@ -43,7 +43,7 @@ export default function PostContent({ content }: PostContentProps) {
 
   return (
     <div 
-      className="prose prose-invert max-w-none 
+      className="post-content prose prose-invert max-w-none 
         prose-headings:text-neon-cyan prose-headings:font-bold
         prose-a:text-neon-cyan prose-a:no-underline hover:prose-a:underline
         prose-strong:text-gray-100

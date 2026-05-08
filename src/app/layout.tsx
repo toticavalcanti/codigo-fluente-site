@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import LeadPopup from "@/components/LeadPopup";
 import { getMenuCategories } from "@/lib/api";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -22,9 +23,10 @@ export default async function RootLayout({
   const categories = await getMenuCategories();
 
   return (
-    <html lang="pt-BR" className="dark">
+    <html lang="pt-BR" className="dark" suppressHydrationWarning>
       <body className={`${jetbrainsMono.variable} font-mono bg-background text-foreground antialiased`}>
         <Navbar categories={categories} />
+        <LeadPopup />
         <main className="min-h-screen">
           {children}
         </main>

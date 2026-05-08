@@ -3,6 +3,39 @@ import { Category } from '@/models/Category';
 import { Post } from '@/models/Post';
 import { cleanWordPressContent } from './utils';
 
+interface CategoryDoc {
+  _id: unknown;
+  slug: string;
+  parent_slug?: string | null;
+  is_top_level?: boolean;
+}
+
+export async function getCategoryPath(slug: string): Promise<string[]> {
+  await dbConnect();
+  const path: string[] = [];
+  let current = slug;
+  for (let i = 0; i < 5; i++) {
+    const cat = await Category.findOne({ slug: current }).lean() as CategoryDoc | null;
+    if (!cat) break;
+    path.unshift(current);
+    if (!cat.parent_slug) break;
+    current = cat.parent_slug;
+  }
+  return path;
+}
+
+export async function getPostUrl(postSlug: string, categoryIds: unknown[]): Promise<string> {
+  await dbConnect();
+  const cats = await Category.find({ _id: { $in: categoryIds } }).lean() as CategoryDoc[];
+  const deepest = cats
+    .filter(c => c.parent_slug)
+    .sort((a, b) => (a.parent_slug ?? '').localeCompare(b.parent_slug ?? ''));
+  const primary = deepest[0] ?? cats[0];
+  if (!primary) return `/${postSlug}`;
+  const path = await getCategoryPath(primary.slug);
+  return `/${path.join('/')}/${postSlug}`;
+}
+
 
 function extractVideo(content: string) {
   const ytMatch = content.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
@@ -11,15 +44,42 @@ function extractVideo(content: string) {
 
 export async function getMenuCategories() {
   await dbConnect();
-  // Get roots (parent_mongo_id is null) and populate children
-  const roots = await Category.find({ parent_mongo_id: null })
-    .populate({
-      path: 'children',
-      populate: { path: 'children' } // Support up to 2 levels deep as per hierarchy
-    })
-    .sort({ name: 1 })
-    .lean();
-  return JSON.parse(JSON.stringify(roots));
+  
+  // Buscar todas as categorias para construir a árvore em memória
+  const allCategories = await Category.find({}).lean() as any[];
+
+  // Roots são as categorias marcadas como top-level ou sem pai
+  const roots = allCategories
+    .filter(c => c.is_top_level || (!c.parent_slug && !c.parent_mongo_id))
+    .sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+
+  const result = await Promise.all(roots.map(async root => {
+    // Buscar filhos diretos
+    const children = allCategories
+      .filter(c => c.parent_slug === root.slug)
+      .sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    
+    return {
+      ...root,
+      url: `/${root.slug}`,
+      children: await Promise.all(children.map(async child => {
+        // Buscar netos
+        const grandchildren = allCategories
+          .filter(c => c.parent_slug === child.slug)
+          .sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+        return {
+          ...child,
+          url: `/${root.slug}/${child.slug}`,
+          children: grandchildren.map(gc => ({
+            ...gc,
+            url: `/${root.slug}/${child.slug}/${gc.slug}`
+          }))
+        };
+      }))
+    };
+  }));
+
+  return JSON.parse(JSON.stringify(result));
 }
 
 export async function getAllPosts(page = 1, limit = 12) {
@@ -113,21 +173,32 @@ export async function getNeighborPosts(publishedAt: string, categoryId: string) 
       published_at: { $lt: new Date(publishedAt) }
     })
       .sort({ published_at: -1 })
-      .select('slug title')
+      .select('slug title category_ids')
       .lean(),
     Post.findOne({
       category_ids: categoryId,
       published_at: { $gt: new Date(publishedAt) }
     })
       .sort({ published_at: 1 })
-      .select('slug title')
+      .select('slug title category_ids')
       .lean()
   ]);
 
   return {
-    prev: prev ? JSON.parse(JSON.stringify(prev)) : null,
-    next: next ? JSON.parse(JSON.stringify(next)) : null
+    prev: prev ? {
+      ...JSON.parse(JSON.stringify(prev)),
+      url: await getPostUrl(prev.slug, prev.category_ids)
+    } : null,
+    next: next ? {
+      ...JSON.parse(JSON.stringify(next)),
+      url: await getPostUrl(next.slug, next.category_ids)
+    } : null
   };
+}
+
+export async function getCategoryBySlug(slug: string) {
+  await dbConnect();
+  return Category.findOne({ slug }).lean();
 }
 
 export async function getRelatedPosts(postId: string, categoryIds: string[], limit = 4) {

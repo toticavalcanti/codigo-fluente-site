@@ -40,6 +40,29 @@ body {
   .text-glow-cyan {
     text-shadow: 0 0 5px #00f5ff;
   }
+  
+  .animate-in {
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+  }
+  
+  .fade-in {
+    animation-name: fadeIn;
+  }
+  
+  .zoom-in {
+    animation-name: zoomIn;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes zoomIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
 }
 
 /* Custom scrollbar for dark theme */
@@ -75,4 +98,43 @@ body {
 
 .prose pre:hover .copy-btn {
   opacity: 1;
+}
+
+.prose pre:hover .copy-btn {
+  opacity: 1;
+}
+
+/* Estilizar links de afiliados/redes sociais no final dos posts */
+.post-content a[href*="facebook.com"],
+.post-content a[href*="pinterest.com"],
+.post-content a[href*="instagram.com"],
+.post-content a[href*="workover.com"],
+.post-content a[href*="hostg.xyz"],
+.post-content a[href*="digitalocean.com"],
+.post-content a[href*="one.com"] {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  margin: 4px;
+  border: 1px solid rgba(0, 245, 255, 0.3);
+  border-radius: 6px;
+  color: #00f5ff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.post-content a[href*="facebook.com"]:hover,
+.post-content a[href*="pinterest.com"]:hover,
+.post-content a[href*="instagram.com"]:hover,
+.post-content a[href*="workover.com"]:hover,
+.post-content a[href*="hostg.xyz"]:hover,
+.post-content a[href*="digitalocean.com"]:hover,
+.post-content a[href*="one.com"]:hover {
+  background: rgba(0, 245, 255, 0.1);
+  border-color: #00f5ff;
+}
+
+.logo-cyan {
+  filter: brightness(0) saturate(100%) invert(90%) sepia(60%) saturate(400%) hue-rotate(150deg) brightness(105%);
 }

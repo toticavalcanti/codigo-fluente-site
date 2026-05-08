@@ -9,6 +9,7 @@ interface Category {
   _id: string;
   name: string;
   slug: string;
+  url: string;
   children?: Category[];
 }
 
@@ -80,6 +81,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
     return {
       ...category,
       name: item.label, // Use the forced label
+      url: category.url || `/${category.slug}`,
       children
     };
   }).filter(Boolean) as Category[];
@@ -91,7 +93,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
     return (
       <div className={`relative group/sub ${isSubmenu ? 'w-full' : ''}`}>
         <Link
-          href={`/${cat.slug}`}
+          href={cat.url || `/${cat.slug}`}
           className={`flex items-center justify-between px-4 py-3 text-[13px] text-gray-300 hover:text-neon-cyan hover:bg-white/5 transition-colors duration-200 ${isSubmenu ? 'pl-4' : ''}`}
         >
           <span>{cat.name}</span>
@@ -104,7 +106,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
         
         {hasChildren && (
           <div className="absolute left-full top-0 ml-0 w-72 bg-[#111111] border border-[#222222] rounded shadow-2xl py-1 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 z-[60]">
-            {cat.children!.map(child => (
+            {cat.children?.map(child => (
               <DropdownItem key={child._id} cat={child} isSubmenu={true} />
             ))}
           </div>
@@ -126,7 +128,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
                 width={120}
                 height={120}
                 priority
-                className="hover:opacity-80 transition-opacity"
+                className="logo-cyan hover:opacity-80 transition-opacity"
               />
             </Link>
           </div>
@@ -137,7 +139,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
               {menuItems.map((cat) => (
                 <div key={cat._id} className="relative group">
                   <Link
-                    href={cat.slug === 'sobre' ? '/sobre' : `/${cat.slug}`}
+                    href={cat.slug === 'sobre' ? '/sobre' : (cat.url || `/${cat.slug}`)}
                     className="text-white hover:text-neon-cyan px-4 py-2 rounded-md text-[13px] font-bold tracking-wide transition-colors duration-200 flex items-center uppercase"
                   >
                     {cat.name}
@@ -198,7 +200,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
                   {cat.children.map((child) => (
                     <div key={child._id}>
                       <Link
-                        href={`/${child.slug}`}
+                        href={child.url || `/${child.slug}`}
                         className="block text-gray-300 text-sm hover:text-neon-cyan py-1"
                         onClick={() => setIsOpen(false)}
                       >
@@ -209,7 +211,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
                           {child.children.map((subChild) => (
                             <Link
                               key={subChild._id}
-                              href={`/${subChild.slug}`}
+                              href={subChild.url || `/${subChild.slug}`}
                               className="block text-gray-400 text-[13px] hover:text-neon-cyan py-1"
                               onClick={() => setIsOpen(false)}
                             >

@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getPostUrl } from '@/lib/api';
 
 interface PostCardProps {
   post: {
@@ -9,12 +10,13 @@ interface PostCardProps {
     slug: string;
     excerpt: string;
     thumbnail?: string;
+    category_ids: string[];
     categories: Array<{ name: string; slug: string }>;
     published_at: string;
   };
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export default async function PostCard({ post }: PostCardProps) {
   const date = new Date(post.published_at).toLocaleDateString('pt-BR', {
     day: '2-digit',
     month: 'long',
@@ -23,9 +25,10 @@ export default function PostCard({ post }: PostCardProps) {
 
   const category = post.categories?.[0];
   const thumbnail = post.thumbnail || '/images/fallback-thumb.png';
+  const url = await getPostUrl(post.slug, post.category_ids);
 
   return (
-    <Link href={`/${category?.slug || 'blog'}/${post.slug}`} className="group">
+    <Link href={url} className="group">
       <article className="h-full bg-background border border-white/10 rounded-xl overflow-hidden transition-all duration-300 hover:border-neon-pink/50 hover:shadow-[0_0_20px_rgba(255,45,120,0.2)] flex flex-col">
         <div className="relative aspect-video overflow-hidden">
           <Image
