@@ -8,7 +8,9 @@ const PostSchema = new Schema({
   content: String,
   content_text: String,
   video_url: String,
+  youtube_id: String,
   thumbnail: String,
+  status: { type: String, enum: ['published', 'draft'], default: 'published' },
   categories: [{
     _id: { type: Schema.Types.ObjectId, ref: 'Category' },
     name: String,
