@@ -16,13 +16,18 @@ interface PostCardProps {
   };
 }
 
-export default async function PostCard({ post }: PostCardProps) {
-  const date = new Date(post.published_at).toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric'
-  });
+function cleanExcerpt(text: string): string {
+  if (!text) return '';
+  // Remove frases de navegação comuns
+  const cleaned = text
+    .replace(/Voltar para página principal[^.]*\./gi, '')
+    .replace(/Todas as aulas desse curso[^.]*\./gi, '')
+    .replace(/Aula \d+[^.]*\./gi, '')
+    .trim();
+  return cleaned.slice(0, 150) + (cleaned.length > 150 ? '...' : '');
+}
 
+export default async function PostCard({ post }: PostCardProps) {
   const category = post.categories?.[0];
   const thumbnail = post.thumbnail || '/images/fallback-thumb.png';
   const url = await getPostUrl(post.slug, post.category_ids);
@@ -46,12 +51,11 @@ export default async function PostCard({ post }: PostCardProps) {
         </div>
         
         <div className="p-5 flex-1 flex flex-col">
-          <time className="text-xs text-gray-500 mb-2 block">{date}</time>
           <h3 className="text-lg font-bold text-gray-100 group-hover:text-neon-pink transition-colors line-clamp-2 mb-3">
             {post.title}
           </h3>
           <p className="text-sm text-gray-400 line-clamp-3 mb-4 flex-1">
-            {post.excerpt}
+            {cleanExcerpt(post.excerpt)}
           </p>
           <div className="text-neon-cyan text-xs font-bold flex items-center group-hover:underline">
             LER AULA
