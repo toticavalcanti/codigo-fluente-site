@@ -123,12 +123,12 @@ export default function Navbar({ categories }: { categories: Category[] }) {
           <div className="flex-shrink-0">
             <Link href="/" className="block">
               <Image 
-                src="https://pub-7deede0db74e4001bd7334a7b1a70353.r2.dev/code-upscale-relevo-01.png"
+                src="/code-upscale-relevo-01-ciano.png"
                 alt="Código Fluente"
                 width={120}
                 height={120}
                 priority
-                className="logo-cyan hover:opacity-80 transition-opacity"
+                className="hover:opacity-80 transition-opacity"
               />
             </Link>
           </div>

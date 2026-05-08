@@ -134,7 +134,3 @@ body {
   background: rgba(0, 245, 255, 0.1);
   border-color: #00f5ff;
 }
-
-.logo-cyan {
-  filter: brightness(0) saturate(100%) invert(90%) sepia(60%) saturate(400%) hue-rotate(150deg) brightness(105%);
-}

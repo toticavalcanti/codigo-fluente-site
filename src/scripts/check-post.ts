@@ -8,7 +8,7 @@ async function main() {
 
     await dbConnect();
 
-    const slug = "aula-20-python-biblioteca-padrao-modulo-io";
+    const slug = "aula-97-django-ecommerce-gerenciamento-de-cartoes-salvos-stripe";
 
     const post = await Post.findOne({ slug }).lean();
 
