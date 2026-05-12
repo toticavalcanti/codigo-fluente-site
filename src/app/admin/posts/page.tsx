@@ -11,6 +11,7 @@ interface PostSummary {
   createdAt: string;
   published_at?: string;
   status?: 'published' | 'draft';
+  url: string;
 }
 
 function formatDate(date: unknown): string {
@@ -58,7 +59,7 @@ export default function AdminPostsPage() {
       } else {
         alert('Erro ao excluir post');
       }
-    } catch (error) {
+    } catch {
       alert('Erro ao excluir post');
     }
   };
@@ -137,6 +138,14 @@ export default function AdminPostsPage() {
                       {formatDate(post.published_at || post.createdAt)}
                     </td>
                     <td className="px-6 py-4 text-right space-x-3">
+                      <a 
+                        href={`${post.url}?preview=true`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-yellow-400 hover:text-yellow-300 transition-colors text-sm font-bold uppercase tracking-widest"
+                      >
+                        Preview
+                      </a>
                       <Link 
                         href={`/admin/posts/${post._id}/edit`}
                         className="text-gray-400 hover:text-white transition-colors text-sm font-bold uppercase tracking-widest"

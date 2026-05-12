@@ -21,11 +21,17 @@ export async function PUT(
     const { id } = await params;
     const body = await request.json();
 
+    const updateData = { ...body };
+    if (!updateData.date || new Date(updateData.date).getFullYear() < 1971) {
+      updateData.date = new Date();
+      updateData.published_at = new Date();
+    }
+
     await dbConnect();
 
     // If slug is being updated, check for uniqueness
-    if (body.slug) {
-      const existing = await Post.findOne({ slug: body.slug, _id: { $ne: id } });
+    if (updateData.slug) {
+      const existing = await Post.findOne({ slug: updateData.slug, _id: { $ne: id } });
       if (existing) {
         return NextResponse.json({ message: 'Este slug já está em uso' }, { status: 409 });
       }
@@ -33,7 +39,7 @@ export async function PUT(
 
     const updatedPost = await Post.findByIdAndUpdate(
       id,
-      { $set: body },
+      { $set: updateData },
       { new: true }
     );
 

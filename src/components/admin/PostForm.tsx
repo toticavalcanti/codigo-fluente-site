@@ -2,11 +2,25 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import dynamic from 'next/dynamic';
+import { marked } from 'marked';
+
+// Import MDEditor dynamically to avoid SSR issues
+const MDEditor = dynamic(
+  () => import('@uiw/react-md-editor'),
+  { ssr: false }
+);
+
+// Import MDEditor styles
+import "@uiw/react-md-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
 
 interface Category {
   _id: string;
   name: string;
   slug: string;
+  parent_slug?: string;
 }
 
 interface PostData {
@@ -29,6 +43,7 @@ export default function PostForm({ initialData }: PostFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [editorMode, setEditorMode] = useState<'markdown' | 'html'>('markdown');
   
   const [formData, setFormData] = useState<PostData>(initialData || {
     title: '',
@@ -48,8 +63,8 @@ export default function PostForm({ initialData }: PostFormProps) {
         const res = await fetch('/api/categories'); // Assuming this exists or I'll create it
         const data = await res.json();
         setCategories(data || []);
-      } catch (error) {
-        console.error('Erro ao buscar categorias:', error);
+      } catch (err) {
+        console.error('Erro ao buscar categorias:', err);
       }
     };
     fetchCategories();
@@ -90,24 +105,55 @@ export default function PostForm({ initialData }: PostFormProps) {
     const url = formData._id ? `/api/admin/posts/${formData._id}` : '/api/admin/posts';
 
     try {
+      // Convert Markdown to HTML before saving if in markdown mode
+      const finalContent = editorMode === 'markdown' 
+        ? await marked.parse(formData.content)
+        : formData.content;
+      
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          content: finalContent
+        }),
       });
 
       if (res.ok) {
         router.push('/admin/posts');
         router.refresh();
       } else {
-        const error = await res.json();
-        alert(error.message || 'Erro ao salvar post');
+        const errorData = await res.json();
+        alert(errorData.message || 'Erro ao salvar post');
       }
-    } catch (error) {
+    } catch (err) {
+      console.error('Save post error:', err);
       alert('Erro ao salvar post');
     } finally {
       setLoading(false);
     }
+  };
+
+  const getHierarchicalCategories = () => {
+    const buildHierarchy = (cats: Category[], parentSlug: string | null = null, level = 0): (Category & { displayName: string })[] => {
+      const result: (Category & { displayName: string })[] = [];
+      const children = cats.filter(c => {
+        const pSlug = c.parent_slug || null;
+        return pSlug === parentSlug;
+      });
+
+      children.forEach(child => {
+        result.push({
+          ...child,
+          displayName: `${'\u00A0\u00A0'.repeat(level)}${level > 0 ? '→ ' : ''}${child.name}`
+        });
+        result.push(...buildHierarchy(cats, child.slug, level + 1));
+      });
+
+      return result;
+    };
+
+    return buildHierarchy(categories);
   };
 
   return (
@@ -139,14 +185,51 @@ export default function PostForm({ initialData }: PostFormProps) {
           </div>
 
           <div>
-            <label className="block text-gray-400 text-sm font-bold mb-2 uppercase tracking-widest">Conteúdo (HTML)</label>
-            <textarea
-              value={formData.content}
-              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-              rows={15}
-              className="w-full bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-white font-mono text-sm focus:border-neon-cyan transition-colors resize-none"
-              placeholder="<p>Escreva o conteúdo técnico aqui...</p>"
-            />
+            <div className="flex justify-between items-center mb-2">
+              <label className="block text-gray-400 text-sm font-bold uppercase tracking-widest">Conteúdo</label>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setEditorMode('markdown')}
+                  className={`px-4 py-1 text-xs font-bold transition-all border-b-2 ${
+                    editorMode === 'markdown' 
+                      ? 'border-neon-cyan text-neon-cyan' 
+                      : 'border-transparent text-gray-500 hover:text-gray-300'
+                  }`}
+                >
+                  MARKDOWN
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEditorMode('html')}
+                  className={`px-4 py-1 text-xs font-bold transition-all border-b-2 ${
+                    editorMode === 'html' 
+                      ? 'border-neon-cyan text-neon-cyan' 
+                      : 'border-transparent text-gray-500 hover:text-gray-300'
+                  }`}
+                >
+                  HTML
+                </button>
+              </div>
+            </div>
+
+            {editorMode === 'markdown' ? (
+              <div data-color-mode="dark">
+                <MDEditor
+                  value={formData.content}
+                  onChange={(val) => setFormData({ ...formData, content: val || '' })}
+                  height={400}
+                />
+              </div>
+            ) : (
+              <textarea
+                value={formData.content}
+                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                className="w-full h-[400px] bg-[#111] border border-white/10 rounded-lg px-4 py-3 text-white font-mono text-sm focus:border-neon-cyan transition-colors resize-none"
+                placeholder="<h2>Título</h2><p>Conteúdo em HTML puro...</p>"
+                spellCheck={false}
+              />
+            )}
           </div>
         </div>
 
@@ -163,8 +246,13 @@ export default function PostForm({ initialData }: PostFormProps) {
               placeholder="https://youtube.com/watch?v=..."
             />
             {formData.youtube_id && formData.youtube_id.length === 11 && (
-              <div className="mt-3 aspect-video bg-black rounded overflow-hidden border border-white/5">
-                <img src={`https://img.youtube.com/vi/${formData.youtube_id}/mqdefault.jpg`} alt="Preview" className="w-full h-full object-cover opacity-50" />
+              <div className="mt-3 aspect-video bg-black rounded overflow-hidden border border-white/5 relative">
+                <Image 
+                  src={`https://img.youtube.com/vi/${formData.youtube_id}/mqdefault.jpg`} 
+                  alt="Preview" 
+                  fill
+                  className="object-cover opacity-50" 
+                />
               </div>
             )}
           </div>
@@ -180,8 +268,8 @@ export default function PostForm({ initialData }: PostFormProps) {
               }}
               className="w-full bg-black border border-white/10 rounded-lg px-4 py-3 text-white h-40 focus:border-neon-cyan transition-colors"
             >
-              {categories.map(cat => (
-                <option key={cat._id} value={cat._id}>{cat.name}</option>
+              {getHierarchicalCategories().map(cat => (
+                <option key={cat._id} value={cat._id}>{cat.displayName}</option>
               ))}
             </select>
             <p className="text-[10px] text-gray-500 mt-2">Segure Ctrl (ou Cmd) para selecionar múltiplas</p>

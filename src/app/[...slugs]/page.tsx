@@ -15,14 +15,17 @@ export const revalidate = 3600;
 
 interface Props {
   params: Promise<{ slugs: string[] }>;
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; preview?: string }>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { slugs } = await params;
   const lastSlug = slugs[slugs.length - 1];
   
-  const post = await getPostBySlug(lastSlug);
+  const { preview } = await searchParams;
+  const isPreview = preview === 'true';
+  
+  const post = await getPostBySlug(lastSlug, isPreview);
   if (post) {
     return {
       title: post.seo?.meta_title || `${post.title} - Código Fluente`,
@@ -39,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (category) {
     return {
       title: `${category.name} - Código Fluente`,
-      description: (category as any).description || `Aulas de ${category.name} no Código Fluente.`,
+      description: (category as { description?: string }).description || `Aulas de ${category.name} no Código Fluente.`,
     };
   }
 
@@ -48,24 +51,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function DynamicPage({ params, searchParams }: Props) {
   const { slugs } = await params;
+
+  // Nunca interceptar rotas do admin
+  if (slugs[0] === 'admin') {
+    notFound();
+  }
+
   const lastSlug = slugs[slugs.length - 1];
   const sParams = await searchParams;
   const currentPage = Number(sParams.page) || 1;
+  const isPreview = sParams.preview === 'true';
 
   // 1. Tentar como Post
-  const post = await getPostBySlug(lastSlug);
+  const post = await getPostBySlug(lastSlug, isPreview);
   
   if (post) {
     const relatedPosts = await getRelatedPosts(post._id, post.category_ids, 4);
     
-    // Vizinhos - usamos a primeira categoria como referência
-    const { prev, next } = await getNeighborPosts(post.published_at, post.category_ids[0]);
-    
-    const date = new Date(post.published_at).toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric'
-    });
+    // Vizinhos - usamos a categoria folha (mais específica) como referência
+    const { prev, next } = await getNeighborPosts(post.slug, post.category_ids);
+
 
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -83,15 +88,16 @@ export default async function DynamicPage({ params, searchParams }: Props) {
               <span className="text-gray-500">AULA</span>
             </div>
             
+            {isPreview && (
+              <div className="bg-yellow-500/20 border border-yellow-500 text-yellow-300 text-sm px-4 py-2 rounded mb-6 flex items-center justify-between">
+                <span>⚠️ MODO PREVIEW — Este post está em rascunho e não é visível publicamente.</span>
+                <Link href="?" className="ml-2 underline font-bold hover:text-white">Sair do preview</Link>
+              </div>
+            )}
+            
             <h1 className="text-2xl md:text-3xl font-bold text-white mb-6 leading-tight">
               {post.title}
             </h1>
-
-            <div className="flex items-center text-gray-500 text-sm font-mono">
-              <time>{date}</time>
-              <span className="mx-3">•</span>
-              <span>Por Código Fluente</span>
-            </div>
           </header>
 
           {post.video_url && (
@@ -102,7 +108,7 @@ export default async function DynamicPage({ params, searchParams }: Props) {
 
           {/* Top Navigation */}
           <div className="flex justify-between items-center mb-10 pb-6 border-b border-white/5">
-            {prev ? (
+            {prev && prev.url ? (
               <Link 
                 href={prev.url}
                 className="flex flex-col group max-w-[45%]"
@@ -112,7 +118,7 @@ export default async function DynamicPage({ params, searchParams }: Props) {
               </Link>
             ) : <div />}
             
-            {next ? (
+            {next && next.url ? (
               <Link 
                 href={next.url}
                 className="flex flex-col items-end group text-right max-w-[45%]"
@@ -131,7 +137,7 @@ export default async function DynamicPage({ params, searchParams }: Props) {
 
           {/* Bottom Navigation */}
           <div className="flex justify-between items-center mt-12 pt-8 border-t border-white/10">
-            {prev ? (
+            {prev && prev.url ? (
               <Link 
                 href={prev.url}
                 className="flex items-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all group"
@@ -145,8 +151,8 @@ export default async function DynamicPage({ params, searchParams }: Props) {
                 </div>
               </Link>
             ) : <div />}
-
-            {next ? (
+ 
+            {next && next.url ? (
               <Link 
                 href={next.url}
                 className="flex items-center px-4 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all group"
@@ -186,7 +192,16 @@ export default async function DynamicPage({ params, searchParams }: Props) {
               Aulas Relacionadas
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {relatedPosts.map((rp: any) => (
+              {relatedPosts.map((rp: { 
+                _id: string; 
+                title: string; 
+                slug: string; 
+                excerpt: string;
+                thumbnail?: string; 
+                category_ids: string[];
+                categories: Array<{ name: string; slug: string }>;
+                published_at: string;
+              }) => (
                 <PostCard key={rp._id} post={rp} />
               ))}
             </div>

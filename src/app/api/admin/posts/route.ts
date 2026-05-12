@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import { Post } from '@/models/Post';
 import { verifyToken } from '@/lib/auth';
+import { getPostUrl } from '@/lib/api';
 
 // Helper to check authentication
 async function checkAuth(request: NextRequest) {
@@ -38,13 +39,19 @@ export async function GET(request: NextRequest) {
       Post.countDocuments(query)
     ]);
 
+    const postsWithUrl = await Promise.all(posts.map(async (post) => ({
+      ...post,
+      url: await getPostUrl(post.slug, post.category_ids)
+    })));
+
     return NextResponse.json({
-      posts,
+      posts: postsWithUrl,
       total,
       pages: Math.ceil(total / limit),
       currentPage: page
     });
-  } catch (error) {
+  } catch (err) {
+    console.error('API GET posts error:', err);
     return NextResponse.json({ message: 'Erro ao buscar posts' }, { status: 500 });
   }
 }
@@ -79,7 +86,8 @@ export async function POST(request: NextRequest) {
       excerpt,
       thumbnail,
       status: status || 'published',
-      published_at: status === 'published' ? new Date() : null
+      date: new Date(),
+      published_at: new Date()
     });
 
     await newPost.save();

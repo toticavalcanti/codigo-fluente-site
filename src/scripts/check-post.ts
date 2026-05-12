@@ -8,7 +8,7 @@ async function main() {
 
     await dbConnect();
 
-    const slug = "aula-97-django-ecommerce-gerenciamento-de-cartoes-salvos-stripe";
+    const slug = "aula-14-k8s-configuracao-do-ingress-controller";
 
     const post = await Post.findOne({ slug }).lean();
 

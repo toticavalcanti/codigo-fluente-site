@@ -5,9 +5,17 @@ import { cleanWordPressContent } from './utils';
 
 interface CategoryDoc {
   _id: unknown;
+  name: string;
   slug: string;
   parent_slug?: string | null;
+  parent_mongo_id?: unknown;
   is_top_level?: boolean;
+}
+
+interface SiblingPost {
+  slug: string;
+  title: string;
+  category_ids: unknown[];
 }
 
 export async function getCategoryPath(slug: string): Promise<string[]> {
@@ -46,7 +54,7 @@ export async function getMenuCategories() {
   await dbConnect();
   
   // Buscar todas as categorias para construir a árvore em memória
-  const allCategories = await Category.find({}).lean() as any[];
+  const allCategories = await Category.find({}).lean() as CategoryDoc[];
 
   // Roots são as categorias marcadas como top-level ou sem pai
   const roots = allCategories
@@ -114,9 +122,9 @@ export async function getPostsByCategory(slug: string, page = 1, limit = 12) {
   if (!category) return { posts: [], total: 0, pages: 0, category: null };
 
   // Find all subcategories recursively
-  const getSubcategoryIds = async (catId: any): Promise<any[]> => {
+  const getSubcategoryIds = async (catId: unknown): Promise<unknown[]> => {
     const children = await Category.find({ parent_mongo_id: catId }).select('_id').lean();
-    let ids = [catId];
+    let ids: unknown[] = [catId];
     for (const child of children) {
       const childIds = await getSubcategoryIds(child._id);
       ids = [...ids, ...childIds];
@@ -150,9 +158,13 @@ export async function getPostsByCategory(slug: string, page = 1, limit = 12) {
   };
 }
 
-export async function getPostBySlug(slug: string) {
+export async function getPostBySlug(slug: string, preview = false) {
   await dbConnect();
-  const post = await Post.findOne({ slug }).lean();
+  const query: { slug: string; status?: string } = { slug };
+  if (!preview) {
+    query.status = 'published';
+  }
+  const post = await Post.findOne(query).lean();
   if (!post) return null;
   
   const cleanedPost = {
@@ -165,34 +177,61 @@ export async function getPostBySlug(slug: string) {
   return JSON.parse(JSON.stringify(cleanedPost));
 }
 
-export async function getNeighborPosts(publishedAt: string, categoryId: string) {
+export async function getNeighborPosts(postSlug: string, categoryIds: unknown[]) {
   await dbConnect();
-  const [prev, next] = await Promise.all([
-    Post.findOne({
-      category_ids: categoryId,
-      published_at: { $lt: new Date(publishedAt) }
-    })
-      .sort({ published_at: -1 })
-      .select('slug title category_ids')
-      .lean(),
-    Post.findOne({
-      category_ids: categoryId,
-      published_at: { $gt: new Date(publishedAt) }
-    })
-      .sort({ published_at: 1 })
-      .select('slug title category_ids')
-      .lean()
-  ]);
+
+  // Encontra a categoria mais específica (folha) do post
+  const cats = await Category.find({ 
+    _id: { $in: categoryIds } 
+  }).lean() as CategoryDoc[];
+  
+  // Prefere categoria com parent_slug (mais específica)
+  const leafCat = cats.find(c => c.parent_slug) ?? cats[0];
+  if (!leafCat) return { prev: null, next: null };
+
+  // Busca todos os posts publicados da mesma categoria
+  const siblings = await Post.find({
+    category_ids: leafCat._id,
+    status: 'published',
+  })
+  .select('slug title category_ids')
+  .lean() as SiblingPost[];
+
+  function getLessonNumber(title: string): number {
+    const match = title.match(/[Aa]ula\s+(\d+)/);
+    return match ? parseInt(match[1], 10) : 9999;
+  }
+
+  // Busca o post atual sem filtro de status para obter seu número
+  const currentPost = await Post.findOne({ slug: postSlug })
+    .select('title').lean() as { title: string } | null;
+  
+  if (!currentPost) return { prev: null, next: null };
+
+  const currentNumber = getLessonNumber(currentPost.title);
+
+  // Ordena siblings por número
+  siblings.sort((a, b) => getLessonNumber(a.title) - getLessonNumber(b.title));
+
+  // Anterior = maior número que seja menor que o atual
+  const prevPost = siblings
+    .filter(p => getLessonNumber(p.title) < currentNumber)
+    .at(-1) ?? null;
+
+  // Próxima = menor número que seja maior que o atual
+  const nextPost = siblings
+    .find(p => getLessonNumber(p.title) > currentNumber) ?? null;
+
+  const prevUrl = prevPost 
+    ? await getPostUrl(prevPost.slug, prevPost.category_ids) 
+    : null;
+  const nextUrl = nextPost 
+    ? await getPostUrl(nextPost.slug, nextPost.category_ids) 
+    : null;
 
   return {
-    prev: prev ? {
-      ...JSON.parse(JSON.stringify(prev)),
-      url: await getPostUrl(prev.slug, prev.category_ids)
-    } : null,
-    next: next ? {
-      ...JSON.parse(JSON.stringify(next)),
-      url: await getPostUrl(next.slug, next.category_ids)
-    } : null
+    prev: prevPost ? { ...prevPost, url: prevUrl } : null,
+    next: nextPost ? { ...nextPost, url: nextUrl } : null,
   };
 }
 
