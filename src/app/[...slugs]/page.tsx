@@ -9,6 +9,7 @@ import Link from "next/link";
 import Comments from "@/components/Comments";
 import PostLinksSection from "@/components/PostLinksSection";
 import PostGrid from "@/components/PostGrid";
+import Script from "next/script";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
@@ -28,21 +29,33 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const post = await getPostBySlug(lastSlug, isPreview);
   if (post) {
     return {
-      title: post.seo?.meta_title || `${post.title} - Código Fluente`,
-      description: post.seo?.meta_description || post.excerpt,
+      title: post.title,
+      description: post.excerpt ?? post.title,
       openGraph: {
         title: post.title,
-        description: post.excerpt,
+        description: post.excerpt ?? post.title,
+        url: `https://www.codigofluente.com.br/${slugs.join('/')}`,
         images: post.thumbnail ? [{ url: post.thumbnail }] : [],
-      }
+        type: 'article',
+        locale: 'pt_BR',
+      },
+      alternates: {
+        canonical: `https://www.codigofluente.com.br/${slugs.join('/')}`,
+      },
     };
   }
 
   const category = await getCategoryBySlug(lastSlug);
   if (category) {
     return {
-      title: `${category.name} - Código Fluente`,
-      description: (category as { description?: string }).description || `Aulas de ${category.name} no Código Fluente.`,
+      title: category.name,
+      description: (category as { description?: string }).description ?? `Aulas de ${category.name} no Código Fluente`,
+      openGraph: {
+        title: category.name,
+        url: `https://www.codigofluente.com.br/${slugs.join('/')}`,
+        type: 'website',
+        locale: 'pt_BR',
+      },
     };
   }
 
@@ -71,9 +84,67 @@ export default async function DynamicPage({ params, searchParams }: Props) {
     // Vizinhos - usamos a categoria folha (mais específica) como referência
     const { prev, next } = await getNeighborPosts(post.slug, post.category_ids);
 
+    const postUrl = `/${slugs.join('/')}`;
+    const categoryName = post.categories?.[0]?.name ?? 'Código Fluente';
 
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <Script
+          id="json-ld-article"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'TechArticle',
+              headline: post.title,
+              description: post.excerpt ?? '',
+              url: `https://www.codigofluente.com.br${postUrl}`,
+              datePublished: post.date || post.published_at,
+              dateModified: post.date || post.published_at,
+              author: {
+                '@type': 'Person',
+                name: 'Toti Cavalcanti',
+                url: 'https://www.codigofluente.com.br',
+              },
+              publisher: {
+                '@type': 'Organization',
+                name: 'Código Fluente',
+                url: 'https://www.codigofluente.com.br',
+                logo: {
+                  '@type': 'ImageObject',
+                  url: 'https://www.codigofluente.com.br/code-upscale-relevo-01-ciano.png',
+                },
+              },
+              image: post.thumbnail ?? 
+                'https://pub-7deede0db74e4001bd7334a7b1a70353.r2.dev/og-image.jpg',
+              inLanguage: 'pt-BR',
+              isPartOf: {
+                '@type': 'Course',
+                name: categoryName,
+                provider: {
+                  '@type': 'Organization',
+                  name: 'Código Fluente',
+                },
+              },
+            }),
+          }}
+        />
+        <Script
+          id="json-ld-breadcrumb"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: slugs.map((slug, index) => ({
+                '@type': 'ListItem',
+                position: index + 1,
+                name: slug.replace(/-/g, ' '),
+                item: `https://www.codigofluente.com.br/${slugs.slice(0, index + 1).join('/')}`,
+              })),
+            }),
+          }}
+        />
         <article>
           <header className="mb-10">
             <div className="flex items-center space-x-2 text-neon-cyan text-sm mb-4 font-bold uppercase tracking-widest">

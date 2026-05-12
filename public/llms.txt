@@ -1,0 +1,25 @@
+# Código Fluente
+> Cursos gratuitos de programação, DevOps, IA e Data Science em português.
+
+## Sobre
+- Autor: Toti Cavalcanti
+- Site: https://www.codigofluente.com.br
+- Idioma: Português brasileiro
+- Licença: Conteúdo educacional gratuito
+
+## Conteúdo disponível
+- Programação Web: Django, React, Golang, Fiber
+- Programação: Python, Go, C, R, JavaScript
+- Big Data / IA: Machine Learning, TensorFlow, Keras, Scikit-Learn
+- DevOps: Kubernetes, Docker, AWS, Git, Terraform
+- Games: Python games
+- Notícias sobre tecnologia
+
+## Estrutura de URLs
+- Categorias: /[categoria]/[subcategoria]
+- Aulas: /[categoria]/[subcategoria]/[curso]/[slug-da-aula]
+- Exemplo: /devops/kubernates/aula-15-k8s-seguranca-melhores-praticas-e-implementacoes
+
+## Fontes de dados
+- Sitemap completo: https://www.codigofluente.com.br/sitemap.xml
+- Robots: https://www.codigofluente.com.br/robots.txt

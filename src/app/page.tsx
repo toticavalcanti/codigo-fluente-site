@@ -1,5 +1,6 @@
 import { getAllPosts } from "@/lib/api";
 import PostGrid from "@/components/PostGrid";
+import Script from "next/script";
 
 export const revalidate = 3600; // ISR every hour
 
@@ -14,6 +15,32 @@ export default async function HomePage({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <Script
+        id="json-ld-website"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'Código Fluente',
+            url: 'https://www.codigofluente.com.br',
+            description: 'Cursos gratuitos de programação, DevOps, IA e Data Science em português.',
+            inLanguage: 'pt-BR',
+            author: {
+              '@type': 'Person',
+              name: 'Toti Cavalcanti',
+            },
+            potentialAction: {
+              '@type': 'SearchAction',
+              target: {
+                '@type': 'EntryPoint',
+                urlTemplate: 'https://www.codigofluente.com.br/?s={search_term_string}',
+              },
+              'query-input': 'required name=search_term_string',
+            },
+          }),
+        }}
+      />
       <header className="mb-12">
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
           Aulas Recentes<span className="text-neon-pink">.</span>
