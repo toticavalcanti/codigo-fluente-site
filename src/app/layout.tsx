@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import LeadPopup from "@/components/LeadPopup";
@@ -11,8 +12,40 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Código Fluente - Cursos de Programação Gratuitos",
-  description: "Aprenda programação, data science, machine learning e muito mais com cursos práticos e gratuitos.",
+  title: {
+    default: 'Código Fluente — Cursos Gratuitos de Programação',
+    template: '%s | Código Fluente',
+  },
+  description: 'Aulas gratuitas de programação, DevOps, IA e Data Science. Django, Python, Go, Kubernetes, React e muito mais.',
+  keywords: ['programação', 'cursos gratuitos', 'django', 'python', 'kubernetes', 'devops', 'react', 'golang'],
+  authors: [{ name: 'Toti Cavalcanti' }],
+  creator: 'Código Fluente',
+  openGraph: {
+    type: 'website',
+    locale: 'pt_BR',
+    url: 'https://www.codigofluente.com.br',
+    siteName: 'Código Fluente',
+    title: 'Código Fluente — Cursos Gratuitos de Programação',
+    description: 'Aulas gratuitas de programação, DevOps, IA e Data Science.',
+    images: [
+      {
+        url: 'https://pub-7deede0db74e4001bd7334a7b1a70353.r2.dev/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Código Fluente',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Código Fluente — Cursos Gratuitos de Programação',
+    description: 'Aulas gratuitas de programação, DevOps, IA e Data Science.',
+    images: ['https://pub-7deede0db74e4001bd7334a7b1a70353.r2.dev/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default async function RootLayout({
@@ -24,6 +57,32 @@ export default async function RootLayout({
 
   return (
     <html lang="pt-BR" className="dark" suppressHydrationWarning>
+      <head>
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+              `}
+            </Script>
+          </>
+        )}
+        {process.env.NEXT_PUBLIC_ADSENSE_ID && (
+          <Script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_ID}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
+      </head>
       <body className={`${jetbrainsMono.variable} font-mono bg-background text-foreground antialiased`}>
         <Navbar categories={categories} />
         <LeadPopup />
