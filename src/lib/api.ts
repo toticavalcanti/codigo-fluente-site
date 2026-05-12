@@ -95,12 +95,12 @@ export async function getAllPosts(page = 1, limit = 12) {
   const skip = (page - 1) * limit;
   
   const [posts, total] = await Promise.all([
-    Post.find({})
+    Post.find({ status: 'published' })
       .sort({ published_at: -1 })
       .skip(skip)
       .limit(limit)
       .lean(),
-    Post.countDocuments({})
+    Post.countDocuments({ status: 'published' })
   ]);
 
   const cleanedPosts = posts.map(post => ({
@@ -136,12 +136,12 @@ export async function getPostsByCategory(slug: string, page = 1, limit = 12) {
   const skip = (page - 1) * limit;
 
   const [posts, total] = await Promise.all([
-    Post.find({ category_ids: { $in: categoryIds } })
+    Post.find({ category_ids: { $in: categoryIds }, status: 'published' })
       .sort({ published_at: -1 })
       .skip(skip)
       .limit(limit)
       .lean(),
-    Post.countDocuments({ category_ids: { $in: categoryIds } })
+    Post.countDocuments({ category_ids: { $in: categoryIds }, status: 'published' })
   ]);
 
   const cleanedPosts = posts.map(post => ({
@@ -244,7 +244,8 @@ export async function getRelatedPosts(postId: string, categoryIds: string[], lim
   await dbConnect();
   const posts = await Post.find({
     _id: { $ne: postId },
-    category_ids: { $in: categoryIds }
+    category_ids: { $in: categoryIds },
+    status: 'published'
   })
     .sort({ published_at: -1 })
     .limit(limit)
