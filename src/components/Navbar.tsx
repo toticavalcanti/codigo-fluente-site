@@ -128,6 +128,7 @@ export default function Navbar({ categories }: { categories: Category[] }) {
                 width={120}
                 height={120}
                 priority
+                style={{ width: 'auto', height: 'auto' }}
                 className="hover:opacity-80 transition-opacity"
               />
             </Link>
