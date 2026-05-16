@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 
-const API_URL = process.env.NEXT_PUBLIC_PROFESSOR_API_URL || 'https://codigo-fluente-professor.onrender.com';
+const API_URL = process.env.NEXT_PUBLIC_PROFESSOR_API_URL || 'https://codigo-fluente-backend.onrender.com';
 
 interface Message {
   role: 'user' | 'professor';
