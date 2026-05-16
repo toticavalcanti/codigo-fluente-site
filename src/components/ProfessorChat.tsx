@@ -10,6 +10,19 @@ interface Message {
   typing?: boolean;
 }
 
+const SAUDACOES = [
+  'Oi! Sou o Professor do Código Fluente. O que você quer aprender hoje?',
+  'E aí! Tô aqui pra te ajudar a navegar pelos cursos. O que precisa?',
+  'Olá! Me pergunta sobre qualquer curso do Código Fluente que eu te ajudo.',
+  'Fala! Quer achar uma aula, tirar dúvida ou saber o que estudar primeiro?',
+  'Oi! Aqui é o Professor do CF. Bora codar? Me diz o que tá precisando.',
+  'E aí, dev! Procurando alguma aula específica ou quer uma dica de por onde começar?',
+];
+
+function getSaudacao(): string {
+  return SAUDACOES[Math.floor(Math.random() * SAUDACOES.length)];
+}
+
 function getSessionId(): string {
   if (typeof window === 'undefined') return 'ssr';
   let id = localStorage.getItem('cf_professor_session');
@@ -83,13 +96,13 @@ export default function ProfessorChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'professor',
-      content: 'Olá! Sou o Professor do Código Fluente. Posso te ajudar a encontrar aulas, tirar dúvidas sobre os cursos ou orientar seus estudos. Como posso ajudar?',
-      typing: false,
+      content: getSaudacao(),
+      typing: true,
     },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [lastProfessorIndex, setLastProfessorIndex] = useState<number | null>(null);
+  const [lastProfessorIndex, setLastProfessorIndex] = useState<number | null>(0);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   // Acorda o Render assim que o componente monta
