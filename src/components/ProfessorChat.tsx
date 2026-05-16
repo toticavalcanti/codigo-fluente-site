@@ -11,12 +11,12 @@ interface Message {
 }
 
 const SAUDACOES = [
-  'Oi! Sou o Professor do Código Fluente. O que você quer aprender hoje?',
-  'E aí! Tô aqui pra te ajudar a navegar pelos cursos. O que precisa?',
-  'Olá! Me pergunta sobre qualquer curso do Código Fluente que eu te ajudo.',
-  'Fala! Quer achar uma aula, tirar dúvida ou saber o que estudar primeiro?',
-  'Oi! Aqui é o Professor do CF. Bora codar? Me diz o que tá precisando.',
-  'E aí, dev! Procurando alguma aula específica ou quer uma dica de por onde começar?',
+  'Oi! Sou o Neo, seu guia no Código Fluente. O que você quer aprender hoje?',
+  'E aí! Aqui é o Neo. Tô aqui pra te ajudar a navegar pelos cursos. O que precisa?',
+  'Fala! Sou o Neo. Me pergunta sobre qualquer curso do Código Fluente que eu te ajudo.',
+  'Oi! Neo aqui. Quer achar uma aula, tirar dúvida ou saber por onde começar?',
+  'E aí, dev! Aqui é o Neo. Bora codar? Me diz o que tá precisando.',
+  'Fala! Neo na área. Procurando alguma aula específica ou quer uma dica de rota de estudos?',
 ];
 
 function getSaudacao(): string {
@@ -33,7 +33,7 @@ function getSessionId(): string {
   return id;
 }
 
-function useTypewriter(text: string, active: boolean, speed = 18) {
+function useTypewriter(text: string, active: boolean, speed = 30) {
   const [displayed, setDisplayed] = useState('');
   const [done, setDone] = useState(false);
 
@@ -155,8 +155,8 @@ export default function ProfessorChat() {
         const newMessages = [...prev, {
           role: 'professor' as const,
           content: isTimeout
-            ? 'O servidor demorou para responder (estava dormindo). Tente enviar a mensagem novamente em alguns segundos!'
-            : 'Desculpe, tive um problema técnico. Tente novamente em instantes.',
+            ? 'Opa, o servidor tava cochilando. Manda a mensagem de novo que agora vai!'
+            : 'Puts, tive um problema técnico aqui. Tenta de novo em instantes!',
           typing: true,
         }];
         setLastProfessorIndex(newMessages.length - 1);
@@ -179,7 +179,7 @@ export default function ProfessorChat() {
       {/* Botão flutuante */}
       <button
         onClick={() => setOpen(o => !o)}
-        aria-label="Abrir chat do Professor"
+        aria-label="Abrir chat com Neo"
         style={{
           position: 'fixed',
           bottom: '24px',
@@ -245,7 +245,7 @@ export default function ProfessorChat() {
             <span style={{ fontSize: '20px' }}>🎓</span>
             <div>
               <div style={{ color: '#00f5ff', fontWeight: 'bold', fontSize: '14px' }}>
-                Professor Código Fluente
+                Neo — Código Fluente
               </div>
               <div style={{ color: '#666', fontSize: '11px' }}>
                 {loading ? (
