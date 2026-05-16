@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import LeadPopup from "@/components/LeadPopup";
+import ProfessorChat from "@/components/ProfessorChat";
 import { getMenuCategories } from "@/lib/api";
 
 const jetbrainsMono = JetBrains_Mono({
@@ -89,6 +90,7 @@ export default async function RootLayout({
         <main className="min-h-screen">
           {children}
         </main>
+        <ProfessorChat />
         <footer className="border-t border-white/10 py-12 mt-20">
           <div className="max-w-7xl mx-auto px-4 text-center">
             <p className="text-gray-500 text-sm">
