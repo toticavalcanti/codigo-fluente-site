@@ -7,6 +7,7 @@ const API_URL = process.env.NEXT_PUBLIC_PROFESSOR_API_URL || 'https://codigo-flu
 interface Message {
   role: 'user' | 'professor';
   content: string;
+  typing?: boolean;
 }
 
 function getSessionId(): string {
@@ -19,17 +20,82 @@ function getSessionId(): string {
   return id;
 }
 
+function useTypewriter(text: string, active: boolean, speed = 18) {
+  const [displayed, setDisplayed] = useState('');
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    if (!active) {
+      setDisplayed(text);
+      setDone(true);
+      return;
+    }
+    setDisplayed('');
+    setDone(false);
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      setDisplayed(text.slice(0, i));
+      if (i >= text.length) {
+        clearInterval(interval);
+        setDone(true);
+      }
+    }, speed);
+    return () => clearInterval(interval);
+  }, [text, active, speed]);
+
+  return { displayed, done };
+}
+
+function TypewriterMessage({ content, active }: { content: string; active: boolean }) {
+  const { displayed } = useTypewriter(content, active);
+  return <span style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{displayed}</span>;
+}
+
+function TypingDots() {
+  return (
+    <span style={{ display: 'inline-flex', gap: '4px', alignItems: 'center', padding: '2px 0' }}>
+      {[0, 1, 2].map(i => (
+        <span
+          key={i}
+          style={{
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            background: '#00f5ff',
+            display: 'inline-block',
+            animation: `cf-bounce 1.2s ease-in-out ${i * 0.2}s infinite`,
+          }}
+        />
+      ))}
+      <style>{`
+        @keyframes cf-bounce {
+          0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+          40% { transform: translateY(-6px); opacity: 1; }
+        }
+      `}</style>
+    </span>
+  );
+}
+
 export default function ProfessorChat() {
-  const [open, setOpen]         = useState(false);
+  const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'professor',
       content: 'Olá! Sou o Professor do Código Fluente. Posso te ajudar a encontrar aulas, tirar dúvidas sobre os cursos ou orientar seus estudos. Como posso ajudar?',
+      typing: false,
     },
   ]);
-  const [input, setInput]       = useState('');
-  const [loading, setLoading]   = useState(false);
-  const bottomRef               = useRef<HTMLDivElement>(null);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [lastProfessorIndex, setLastProfessorIndex] = useState<number | null>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  // Acorda o Render assim que o componente monta
+  useEffect(() => {
+    fetch(`${API_URL}/health`).catch(() => {});
+  }, []);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -43,7 +109,13 @@ export default function ProfessorChat() {
     setMessages(prev => [...prev, { role: 'user', content: text }]);
     setLoading(true);
 
+    // Simula delay humano antes de "começar a digitar" (600-1200ms)
+    await new Promise(r => setTimeout(r, 600 + Math.random() * 600));
+
     try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 40000);
+
       const res = await fetch(`${API_URL}/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -51,17 +123,32 @@ export default function ProfessorChat() {
           session_id: getSessionId(),
           message: text,
         }),
+        signal: controller.signal,
       });
+      clearTimeout(timeout);
 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const data = await res.json();
-      setMessages(prev => [...prev, { role: 'professor', content: data.response }]);
-    } catch {
-      setMessages(prev => [
-        ...prev,
-        { role: 'professor', content: 'Desculpe, tive um problema técnico. Tente novamente em instantes.' },
-      ]);
+
+      setMessages(prev => {
+        const newMessages = [...prev, { role: 'professor' as const, content: data.response, typing: true }];
+        setLastProfessorIndex(newMessages.length - 1);
+        return newMessages;
+      });
+    } catch (err: unknown) {
+      const isTimeout = err instanceof Error && err.name === 'AbortError';
+      setMessages(prev => {
+        const newMessages = [...prev, {
+          role: 'professor' as const,
+          content: isTimeout
+            ? 'O servidor demorou para responder (estava dormindo). Tente enviar a mensagem novamente em alguns segundos!'
+            : 'Desculpe, tive um problema técnico. Tente novamente em instantes.',
+          typing: true,
+        }];
+        setLastProfessorIndex(newMessages.length - 1);
+        return newMessages;
+      });
     } finally {
       setLoading(false);
     }
@@ -87,18 +174,19 @@ export default function ProfessorChat() {
           width: '56px',
           height: '56px',
           borderRadius: '50%',
-          background: '#00f5ff',
-          border: 'none',
+          background: open ? '#1a1a2e' : '#00f5ff',
+          border: open ? '2px solid #00f5ff' : 'none',
           cursor: 'pointer',
           boxShadow: '0 4px 20px rgba(0,245,255,0.4)',
           zIndex: 9999,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '24px',
-          transition: 'transform 0.2s',
+          fontSize: '22px',
+          transition: 'all 0.25s cubic-bezier(.34,1.56,.64,1)',
+          color: open ? '#00f5ff' : '#000',
         }}
-        onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.1)')}
+        onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.12)')}
         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
       >
         {open ? '✕' : '🎓'}
@@ -122,79 +210,78 @@ export default function ProfessorChat() {
             flexDirection: 'column',
             fontFamily: 'monospace',
             overflow: 'hidden',
+            animation: 'cf-slide-up 0.25s cubic-bezier(.34,1.56,.64,1)',
           }}
         >
+          <style>{`
+            @keyframes cf-slide-up {
+              from { opacity: 0; transform: translateY(20px) scale(0.97); }
+              to   { opacity: 1; transform: translateY(0) scale(1); }
+            }
+          `}</style>
+
           {/* Header */}
-          <div
-            style={{
-              padding: '12px 16px',
-              background: '#00f5ff15',
-              borderBottom: '1px solid #00f5ff22',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-            }}
-          >
+          <div style={{
+            padding: '12px 16px',
+            background: '#00f5ff15',
+            borderBottom: '1px solid #00f5ff22',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+          }}>
             <span style={{ fontSize: '20px' }}>🎓</span>
             <div>
               <div style={{ color: '#00f5ff', fontWeight: 'bold', fontSize: '14px' }}>
                 Professor Código Fluente
               </div>
               <div style={{ color: '#666', fontSize: '11px' }}>
-                Tire dúvidas sobre os cursos
+                {loading ? (
+                  <span style={{ color: '#00f5ff88' }}>digitando<TypingDots /></span>
+                ) : 'Tire dúvidas sobre os cursos'}
               </div>
             </div>
           </div>
 
           {/* Mensagens */}
-          <div
-            style={{
-              flex: 1,
-              overflowY: 'auto',
-              padding: '16px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '12px',
-            }}
-          >
+          <div style={{
+            flex: 1,
+            overflowY: 'auto',
+            padding: '16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+          }}>
             {messages.map((msg, i) => (
-              <div
-                key={i}
-                style={{
-                  display: 'flex',
-                  justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                }}
-              >
-                <div
-                  style={{
-                    maxWidth: '80%',
-                    padding: '10px 14px',
-                    borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                    background: msg.role === 'user' ? '#00f5ff' : '#2a2a4a',
-                    color: msg.role === 'user' ? '#000' : '#e0e0e0',
-                    fontSize: '13px',
-                    lineHeight: '1.5',
-                    whiteSpace: 'pre-wrap',
-                    wordBreak: 'break-word',
-                  }}
-                >
-                  {msg.content}
+              <div key={i} style={{
+                display: 'flex',
+                justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
+              }}>
+                <div style={{
+                  maxWidth: '80%',
+                  padding: '10px 14px',
+                  borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                  background: msg.role === 'user' ? '#00f5ff' : '#2a2a4a',
+                  color: msg.role === 'user' ? '#000' : '#e0e0e0',
+                  fontSize: '13px',
+                  lineHeight: '1.5',
+                }}>
+                  {msg.role === 'professor' && msg.typing && i === lastProfessorIndex ? (
+                    <TypewriterMessage content={msg.content} active={true} />
+                  ) : (
+                    <span style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{msg.content}</span>
+                  )}
                 </div>
               </div>
             ))}
 
             {loading && (
               <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                <div
-                  style={{
-                    padding: '10px 14px',
-                    borderRadius: '16px 16px 16px 4px',
-                    background: '#2a2a4a',
-                    color: '#666',
-                    fontSize: '13px',
-                  }}
-                >
-                  Professor digitando...
+                <div style={{
+                  padding: '12px 16px',
+                  borderRadius: '16px 16px 16px 4px',
+                  background: '#2a2a4a',
+                }}>
+                  <TypingDots />
                 </div>
               </div>
             )}
@@ -203,14 +290,12 @@ export default function ProfessorChat() {
           </div>
 
           {/* Input */}
-          <div
-            style={{
-              padding: '12px',
-              borderTop: '1px solid #00f5ff22',
-              display: 'flex',
-              gap: '8px',
-            }}
-          >
+          <div style={{
+            padding: '12px',
+            borderTop: '1px solid #00f5ff22',
+            display: 'flex',
+            gap: '8px',
+          }}>
             <textarea
               value={input}
               onChange={e => setInput(e.target.value)}
@@ -228,7 +313,10 @@ export default function ProfessorChat() {
                 fontFamily: 'monospace',
                 resize: 'none',
                 outline: 'none',
+                transition: 'border-color 0.2s',
               }}
+              onFocus={e => (e.target.style.borderColor = '#00f5ff88')}
+              onBlur={e => (e.target.style.borderColor = '#00f5ff33')}
             />
             <button
               onClick={sendMessage}
@@ -241,7 +329,7 @@ export default function ProfessorChat() {
                 cursor: loading || !input.trim() ? 'not-allowed' : 'pointer',
                 padding: '8px 14px',
                 fontSize: '16px',
-                transition: 'background 0.2s',
+                transition: 'all 0.2s',
               }}
             >
               ➤
