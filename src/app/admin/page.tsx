@@ -71,7 +71,8 @@ export default async function AdminDashboard() {
               { name: 'Posts & Aulas', href: '/admin/posts' },
               { name: 'Categorias', href: '/admin/categories' },
               { name: 'Comentários', href: '/admin/comments' },
-              { name: 'Leads (Newsletter)', href: '/admin/leads' },
+              { name: 'Leads Neo', href: '/admin/leads' },
+              { name: 'Conversas Neo', href: '/admin/conversas' },
             ].map((item) => (
               <Link 
                 key={item.name} 
