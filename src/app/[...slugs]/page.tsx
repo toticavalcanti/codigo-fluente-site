@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getPostBySlug, getCategoryBySlug, getPostsByCategory, getRelatedPosts, getNeighborPosts } from '@/lib/api';
-import { cleanWordPressContent } from '@/lib/utils';
+import { cleanWordPressContent, getPostThumbnail } from '@/lib/utils';
 import VideoEmbed from "@/components/VideoEmbed";
 import PostContent from "@/components/PostContent";
 import PostCard from "@/components/PostCard";
@@ -35,7 +35,11 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
         title: post.title,
         description: post.excerpt ?? post.title,
         url: `https://www.codigofluente.com.br/${slugs.join('/')}`,
-        images: post.thumbnail ? [{ url: post.thumbnail }] : [],
+        images: [{ 
+          url: getPostThumbnail(post).startsWith('/') 
+            ? `https://www.codigofluente.com.br${getPostThumbnail(post)}` 
+            : getPostThumbnail(post) 
+        }],
         type: 'article',
         locale: 'pt_BR',
       },
@@ -115,8 +119,9 @@ export default async function DynamicPage({ params, searchParams }: Props) {
                   url: 'https://www.codigofluente.com.br/code-upscale-relevo-01-ciano.png',
                 },
               },
-              image: post.thumbnail ?? 
-                'https://pub-7deede0db74e4001bd7334a7b1a70353.r2.dev/og-image.jpg',
+              image: getPostThumbnail(post).startsWith('/')
+                ? 'https://pub-7deede0db74e4001bd7334a7b1a70353.r2.dev/og-image.jpg'
+                : getPostThumbnail(post),
               inLanguage: 'pt-BR',
               isPartOf: {
                 '@type': 'Course',

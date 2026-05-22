@@ -3,6 +3,7 @@ import dbConnect from '@/lib/mongodb';
 import { Post } from '@/models/Post';
 import { verifyToken } from '@/lib/auth';
 import { getPostUrl } from '@/lib/api';
+import { revalidatePath } from 'next/cache';
 
 // Helper to check authentication
 async function checkAuth(request: NextRequest) {
@@ -91,6 +92,8 @@ export async function POST(request: NextRequest) {
     });
 
     await newPost.save();
+
+    revalidatePath('/', 'layout');
 
     return NextResponse.json(newPost, { status: 201 });
   } catch (error) {

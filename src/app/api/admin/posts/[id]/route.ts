@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import { Post } from '@/models/Post';
 import { verifyToken } from '@/lib/auth';
+import { revalidatePath } from 'next/cache';
 
 async function checkAuth(request: NextRequest) {
   const token = request.cookies.get('cf-admin-token')?.value;
@@ -47,6 +48,8 @@ export async function PUT(
       return NextResponse.json({ message: 'Post não encontrado' }, { status: 404 });
     }
 
+    revalidatePath('/', 'layout');
+
     return NextResponse.json(updatedPost);
   } catch (error) {
     return NextResponse.json({ message: 'Erro ao atualizar post' }, { status: 500 });
@@ -70,6 +73,8 @@ export async function DELETE(
     if (!deletedPost) {
       return NextResponse.json({ message: 'Post não encontrado' }, { status: 404 });
     }
+
+    revalidatePath('/', 'layout');
 
     return NextResponse.json({ message: 'Post excluído com sucesso' });
   } catch (error) {

@@ -35,3 +35,64 @@ export function cleanWordPressContent(html: string): string {
 
   return cleaned.trim();
 }
+
+export function getYouTubeId(url: string | null | undefined): string | null {
+  if (!url) return null;
+  
+  // Extract ID from various YouTube URL formats
+  const regExp = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/vi\/)([^&\n?#]+)/i;
+  const match = url.match(regExp);
+  if (match && match[1]) {
+    return match[1];
+  }
+  
+  // Check if it's already a clean 11-character YouTube ID
+  const cleanUrl = url.trim();
+  if (cleanUrl.length === 11 && /^[a-zA-Z0-9_-]{11}$/.test(cleanUrl)) {
+    return cleanUrl;
+  }
+  
+  return null;
+}
+
+export function getPostThumbnail(post: {
+  thumbnail?: string;
+  youtube_id?: string;
+  video_url?: string;
+  content?: string;
+}): string {
+  // 1. If we have a valid thumbnail, use it
+  if (post.thumbnail && typeof post.thumbnail === 'string') {
+    const thumb = post.thumbnail.trim();
+    if (
+      thumb !== '' &&
+      !thumb.endsWith('.r2.d') &&
+      !thumb.endsWith('.d') && // Catch the user's typo ending in .d or .r2.d
+      (thumb.startsWith('http') || thumb.startsWith('/'))
+    ) {
+      return thumb;
+    }
+  }
+
+  // 2. Extract YouTube ID to generate a fallback thumbnail
+  let ytId: string | null = null;
+
+  if (post.youtube_id) {
+    ytId = getYouTubeId(post.youtube_id);
+  }
+
+  if (!ytId && post.video_url) {
+    ytId = getYouTubeId(post.video_url);
+  }
+
+  if (!ytId && post.content) {
+    ytId = getYouTubeId(post.content);
+  }
+
+  if (ytId) {
+    return `https://img.youtube.com/vi/${ytId}/mqdefault.jpg`;
+  }
+
+  // 3. Fallback image
+  return '/images/fallback-thumb.png';
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getPostUrl } from '@/lib/api';
+import { getPostThumbnail } from '@/lib/utils';
 
 interface PostCardProps {
   post: {
@@ -10,6 +11,9 @@ interface PostCardProps {
     slug: string;
     excerpt: string;
     thumbnail?: string;
+    youtube_id?: string;
+    video_url?: string;
+    content?: string;
     category_ids: string[];
     categories: Array<{ name: string; slug: string }>;
     published_at: string;
@@ -29,7 +33,7 @@ function cleanExcerpt(text: string): string {
 
 export default async function PostCard({ post }: PostCardProps) {
   const category = post.categories?.[0];
-  const thumbnail = post.thumbnail || '/images/fallback-thumb.png';
+  const thumbnail = getPostThumbnail(post);
   const url = await getPostUrl(post.slug, post.category_ids);
 
   return (
