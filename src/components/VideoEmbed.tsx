@@ -9,11 +9,18 @@ interface VideoEmbedProps {
 export default function VideoEmbed({ url }: VideoEmbedProps) {
   if (!url) return null;
 
-  // Extract YouTube ID using the requested regex
+  // Extract YouTube ID using the requested regex or direct 11-char ID
   const getYouTubeID = (url: string) => {
-    const regExp = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/;
+    const regExp = /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/vi\/)([^&\n?#]+)/i;
     const match = url.match(regExp);
-    return match ? match[1] : null;
+    if (match && match[1]) {
+      return match[1];
+    }
+    const cleanUrl = url.trim();
+    if (cleanUrl.length === 11 && /^[a-zA-Z0-9_-]{11}$/.test(cleanUrl)) {
+      return cleanUrl;
+    }
+    return null;
   };
 
   const videoId = getYouTubeID(url);

@@ -171,7 +171,7 @@ export async function getPostBySlug(slug: string, preview = false) {
     ...post,
     excerpt: cleanWordPressContent(post.excerpt || ''),
     content: cleanWordPressContent(post.content || ''),
-    video_url: post.video_url || extractVideo(post.content || '')
+    video_url: post.video_url || post.youtube_id || extractVideo(post.content || '')
   };
   
   return JSON.parse(JSON.stringify(cleanedPost));
