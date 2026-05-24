@@ -89,6 +89,9 @@ body {
 .prose code {
   color: var(--color-neon-cyan);
   font-family: var(--font-mono);
+}
+
+.prose pre code {
   white-space: pre !important;
 }
 

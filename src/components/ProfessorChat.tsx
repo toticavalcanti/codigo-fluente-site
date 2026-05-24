@@ -34,15 +34,12 @@ function getSessionId(): string {
 }
 
 function useTypewriter(text: string, active: boolean, speed = 30) {
-  const [displayed, setDisplayed] = useState('');
-  const [done, setDone] = useState(false);
+  const [displayed, setDisplayed] = useState(() => active ? '' : text);
+  const [done, setDone] = useState(() => !active);
 
   useEffect(() => {
-    if (!active) {
-      setDisplayed(text);
-      setDone(true);
-      return;
-    }
+    if (!active) return;
+
     setDisplayed('');
     setDone(false);
     let i = 0;
@@ -57,7 +54,10 @@ function useTypewriter(text: string, active: boolean, speed = 30) {
     return () => clearInterval(interval);
   }, [text, active, speed]);
 
-  return { displayed, done };
+  return { 
+    displayed: active ? displayed : text, 
+    done: active ? done : true 
+  };
 }
 
 function TypewriterMessage({ content, active }: { content: string; active: boolean }) {
@@ -212,8 +212,9 @@ export default function ProfessorChat() {
             position: 'fixed',
             bottom: '90px',
             right: '24px',
-            width: '360px',
-            maxHeight: '520px',
+            width: 'calc(100vw - 48px)',
+            maxWidth: '360px',
+            maxHeight: 'min(520px, calc(100vh - 180px))',
             background: '#1a1a2e',
             border: '1px solid #00f5ff33',
             borderRadius: '16px',
