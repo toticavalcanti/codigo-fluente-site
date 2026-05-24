@@ -36,12 +36,17 @@ function getSessionId(): string {
 function useTypewriter(text: string, active: boolean, speed = 30) {
   const [displayed, setDisplayed] = useState(() => active ? '' : text);
   const [done, setDone] = useState(() => !active);
+  const [prevText, setPrevText] = useState(text);
+
+  if (text !== prevText) {
+    setPrevText(text);
+    setDisplayed(active ? '' : text);
+    setDone(!active);
+  }
 
   useEffect(() => {
     if (!active) return;
 
-    setDisplayed('');
-    setDone(false);
     let i = 0;
     const interval = setInterval(() => {
       i++;
